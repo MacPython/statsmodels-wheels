@@ -1,0 +1,45 @@
+language:
+- objective-c
+env:
+  global:
+  - LATEST_TAG=1 # comment out to build version in submodule
+  - PATSY=0.2
+  - PANDAS=0.14
+  matrix:
+  - VERSION=2.7.8 NUMPY_VERSION=1.6.2 # tune to taste
+  - VERSION=3.3.5 NUMPY_VERSION=1.7.1
+  - VERSION=3.4.1 NUMPY_VERSION=1.7.1
+install:
+  - source terryfy/travis_tools.sh
+  - get_python_environment macpython $VERSION venv
+  - pip install delocate numpy==$NUMPY_VERSION
+  - pip install patsy==$PATSY
+  - pip install pandas==$PANDAS
+  - pip install scipy cython wheel
+  - if [ -n "$LATEST_TAG" ]; then checkout_closest_tag statsmodels; fi
+  - cd statsmodels
+  - python setup.py bdist_wheel
+  - delocate-listdeps dist/*.whl # lists library dependencies
+  - delocate-wheel dist/*.whl # copies library dependencies into wheel
+  - rename_wheels dist
+  - pip install dist/*.whl
+  - cd ..
+script:
+  # install dependencies for tests e.g - pip install nose
+  - pip install python-dateutil nose pyyaml matplotlib
+  - mkdir tmp_for_test
+  - cd tmp_for_test
+  # Show versions
+  - python -c 'import statsmodels.api as sm; sm.show_versions();'
+  # Compose a script to run testing
+  - python -c 'import statsmodels as sm; a=sm.test(); import sys; sys.exit((len(a.failures)+len(a.errors))>0)'
+  - cd ..
+before_deploy: cd statsmodels/dist
+deploy:
+  provider: cloudfiles
+  username: travis-worker
+  api_key:
+      secure: "pJN2KXeaPXVPeTRirNNV1oC5CkWNhHLp0cX/GfggVsI2VNF0ggpAUyN7vUzDKxKc9eM2qRY1ZZQl3mo3QnRtOcgJf89ye6dyfyPrHMdpC5lByxK/QALhURrEXT4vUfANDaa8cPOLJ709cdhqxcp6+T0519jxX7iMh0n+xv8KRA4="
+  region: ORD
+  container: wheels
+  skip_cleanup: true

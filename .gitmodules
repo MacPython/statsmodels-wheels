@@ -1,0 +1,6 @@
+[submodule "statsmodels"]
+	path = statsmodels
+	url = git://github.com/statsmodels/statsmodels.git
+[submodule "terryfy"]
+	path = terryfy
+	url = git://github.com/MacPython/terryfy.git
