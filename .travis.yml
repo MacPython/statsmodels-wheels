@@ -3,19 +3,15 @@ language:
 env:
   global:
   - LATEST_TAG=1 # comment out to build version in submodule
-  - PATSY=0.2
-  - PANDAS=0.14
   matrix:
-  - VERSION=2.7.8 NUMPY_VERSION=1.6.2 # tune to taste
+  - VERSION=2.7.8 NUMPY_VERSION=1.7.1 # Because of pandas
   - VERSION=3.3.5 NUMPY_VERSION=1.7.1
   - VERSION=3.4.1 NUMPY_VERSION=1.7.1
 install:
   - source terryfy/travis_tools.sh
   - get_python_environment macpython $VERSION venv
   - pip install delocate numpy==$NUMPY_VERSION
-  - pip install patsy==$PATSY
-  - pip install pandas==$PANDAS
-  - pip install scipy cython wheel
+  - pip install scipy cython wheel pandas patsy
   - if [ -n "$LATEST_TAG" ]; then checkout_closest_tag statsmodels; fi
   - cd statsmodels
   - python setup.py bdist_wheel
