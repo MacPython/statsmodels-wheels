@@ -11,6 +11,6 @@ function run_tests {
     # Runs tests on installed distribution from an empty directory
     python --version
     python -c 'import statsmodels.api as sm; sm.show_versions();'
-    test_cmd="import sys; import scipy; sys.exit(not scipy.test('full').wasSuccessful())"
+    test_cmd="import sys; import statsmodels; sys.exit(not statsmodels.test('full').wasSuccessful())"
     python -c "$test_cmd"
 }
