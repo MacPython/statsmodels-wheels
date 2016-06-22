@@ -37,11 +37,11 @@ matrix:
     - os: linux
       python: 3.4
       env:
-        - NP_TEST_DEP=numpy==1.8.1
+        - NP_TEST_DEP=numpy==1.9.3
     - os: linux
       python: 3.4
       env:
-        - NP_TEST_DEP=numpy==1.8.1
+        - NP_TEST_DEP=numpy==1.9.3
         - PLAT=i686
     - os: linux
       python: 3.5
@@ -61,7 +61,7 @@ matrix:
       language: objective-c
       env:
         - TRAVIS_PYTHON_VERSION=3.4
-        - NP_TEST_DEP=numpy==1.8.1
+        - NP_TEST_DEP=numpy==1.9.3
     - os: osx
       language: objective-c
       env:
