@@ -1,34 +1,130 @@
-##################
-statsmodels wheel builder
-##################
+#########################################
+Building and uploading statsmodels wheels
+#########################################
 
-Repository to build statsmodels wheels.
+We automate wheel building using this custom github repository that builds on
+the travis-ci OSX machines and the travis-ci Linux machines.
 
-By default the repo builds the latest tag (the tag on the branch most recently
-branched from master - see http://stackoverflow.com/a/24557377/1939576). If you
-want to build a specific commit:
+The travis-ci interface for the builds is
+https://travis-ci.org/MacPython/statsmodels-wheels
 
-* Comment out the line ``- LATEST_TAG=1`` in .travis.yml
-* Update statsmodels submodule with version you want to build:
+The driving github repository is
+https://github.com/MacPython/statsmodels-wheels
 
-    * cd statsmodels && git pull && git checkout DESIRED_COMMIT
-    * cd .. && git add statsmodels
-    * git commit
+How it works
+============
 
-* Check minimum numpy versions to build against in ``.travis.yml`` file.  You
-  need to build against the earliest numpy that statsmodels is compatible with; see
-  `forward, backward numpy compatibility
-  <http://stackoverflow.com/questions/17709641/valueerror-numpy-dtype-has-the-wrong-size-try-recompiling/18369312#18369312>`_
+The wheel-building repository:
 
+* does a fresh build of any required C / C++ libraries;
+* builds a statsmodels wheel, linking against these fresh builds;
+* processes the wheel using delocate_ (OSX) or auditwheel_ ``repair``
+  (Manylinux1_).  ``delocate`` and ``auditwheel`` copy the required dynamic
+  libraries into the wheel and relinks the extension modules against the
+  copied libraries;
+* uploads the built wheels to http://wheels.scipy.org (a Rackspace container
+  kindly donated by Rackspace to scikit-learn).
 
-The wheels get uploaded to a `rackspace container
-<http://a365fff413fe338398b6-1c8a9b3114517dc5fe17b7c3f8c63a43.r19.cf2.rackcdn.com>`_
-to which I have the API key.  The API key is encrypted to this specific repo
-in the ``.travis.yml`` file, so the upload won't work for you from another
-account.  Either contact me to get set up, or use another upload service such as
-github - see for example Jonathan Helmus' `sckit-image wheels builder
-<https://github.com/jjhelmus/scikit-image-ci-wheel-builder>`_
+The resulting wheels are therefore self-contained and do not need any external
+dynamic libraries apart from those provided as standard by OSX / Linux as
+defined by the manylinux1 standard.
 
-I got the rackspace API key from Olivier Grisel - we might be able to share
-this account across projects - again - please contact me or Olivier if you'd
-like this to happen.
+The ``.travis.yml`` file in this repository has a line containing the API key
+for the Rackspace container encrypted with an RSA key that is unique to the
+repository - see http://docs.travis-ci.com/user/encryption-keys.  This
+encrypted key gives the travis build permission to upload to the Rackspace
+directory pointed to by http://wheels.scipy.org.
+
+Triggering a build
+==================
+
+You will likely want to edit the ``.travis.yml`` file to specify the
+``BUILD_COMMIT`` before triggering a build - see below.
+
+You will need write permission to the github repository to trigger new builds
+on the travis-ci interface.  Contact us on the mailing list if you need this.
+
+You can trigger a build by:
+
+* making a commit to the ``statsmodels-wheels`` repository (e.g. with ``git commit
+  --allow-empty``); or
+* clicking on the circular arrow icon towards the top right of the travis-ci
+  page, to rerun the previous build.
+
+In general, it is better to trigger a build with a commit, because this makes
+a new set of build products and logs, keeping the old ones for reference.
+Keeping the old build logs helps us keep track of previous problems and
+successful builds.
+
+Which statsmodels commit does the repository build?
+============================================
+
+The ``statsmodels-wheels`` repository will build the commit specified in the
+``BUILD_COMMIT`` at the top of the ``.travis.yml`` file.  This can be any
+naming of a commit, including branch name, tag name or commit hash.
+
+Uploading the built wheels to pypi
+==================================
+
+Be careful, http://wheels.scipy.org points to a container on a distributed
+content delivery network.  It can take up to 15 minutes for the new wheel file
+to get updated into the container at http://wheels.scipy.org.
+
+The same contents appear at
+https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com;
+you might prefer this address because it is https.
+
+When the wheels are updated, you can download them to your machine manually,
+and then upload them manually to pypi, or by using twine_.  You can also use a
+script for doing this, housed at :
+https://github.com/MacPython/terryfy/blob/master/wheel-uploader
+
+For the ``wheel-uploader`` script, you'll need twine and `beautiful soup 4
+<bs4>`_.
+
+You will typically have a directory on your machine where you store wheels,
+called a `wheelhouse`.   The typical call for `wheel-uploader` would then
+be something like::
+
+    CDN_URL=https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
+    wheel-uploader -r warehouse -u $CDN_URL -v -w ~/wheelhouse -t macosx statsmodels 0.8.0
+    wheel-uploader -r warehouse -u $CDN_URL -v -w ~/wheelhouse -t manylinux1 statsmodels 0.8.0
+
+where:
+
+* ``-v`` means give verbose messages;
+* ``-w ~/wheelhouse`` means download the wheels from https://wheels.scipy.org
+  to the directory ``~/wheelhouse``;
+* ``-r warehouse`` uses the upcoming Warehouse PyPI server (it is more
+  reliable than the current PyPI service for uploads);
+* ``statsmodels`` is the root name of the wheel(s) to download / upload;
+* ``0.8.0`` is the version to download / upload.
+
+In order to use the Warehouse PyPI server, you will need something like this
+in your ``~/.pypirc`` file::
+
+    [distutils]
+    index-servers =
+        pypi
+        warehouse
+
+    [pypi]
+    username:your_user_name
+    password:your_password
+
+    [warehouse]
+    repository: https://upload.pypi.io/legacy/
+    username: your_user_name
+    password: your_password
+
+So, in this case, ``wheel-uploader`` will download all wheels starting with
+``statsmodels-0.8.0-`` from http://wheels.scipy.org to ``~/wheelhouse``, then upload
+them to PyPI.
+
+Of course, you will need permissions to upload to PyPI, for this to work.
+
+.. _manylinux1: https://www.python.org/dev/peps/pep-0513
+.. _twine: https://pypi.python.org/pypi/twine
+.. _bs4: https://pypi.python.org/pypi/beautifulsoup4
+.. _delocate: https://pypi.python.org/pypi/delocate
+.. _auditwheel: https://pypi.python.org/pypi/auditwheel
