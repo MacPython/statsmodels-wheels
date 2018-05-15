@@ -102,8 +102,8 @@ before_install:
           CONTAINER=wheels;
           UPLOAD_ARGS="--no-update-index";
       fi
-    - BUILD_DEPENDS="$NP_BUILD_DEP Cython"
-    - TEST_DEPENDS="$NP_TEST_DEP nose pandas"
+    - BUILD_DEPENDS="$NP_BUILD_DEP Cython scipy"
+    - TEST_DEPENDS="$NP_TEST_DEP pandas nose"
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
     - before_install
