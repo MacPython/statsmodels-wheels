@@ -64,7 +64,9 @@ test_script:
   - cd for_testing
   - python --version
   - 'echo backend : agg > matplotlibrc'
-  - pytest --pyargs statsmodels
+  - python --version
+  - python -c 'import statsmodels.api as sm; sm.show_versions();'
+  - python -c "import sys; import statsmodels; sys.exit(not statsmodels.test('full', extra_argv=['--exe', '--exclude=test_sarimax', '--exclude=test_structural', '--exclude=test_dynamic_factor', '--exclude=test_varmax']).wasSuccessful())"
   - cd ..
 
 artifacts:
