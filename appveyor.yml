@@ -57,7 +57,7 @@ build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
   # Install the test dependencies
-  - pip install %NP_TEST_DEP% %SP_TEST_DEP% patsy pandas nose pytest pytest-xdist
+  - pip install %NP_TEST_DEP% %SP_TEST_DEP% patsy pandas nose "pytest<4" pytest-xdist
   - pip install --pre --no-index --find-links .\%REPO_DIR%\dist %PKG_NAME%
   # Change into an innocuous directory and find tests from installation
   - mkdir for_testing
@@ -66,7 +66,7 @@ test_script:
   - 'echo backend : agg > matplotlibrc'
   - python --version
   - python -c "import statsmodels.api as sm; sm.show_versions();"
-  - python -c "import sys; import statsmodels; sys.exit(not statsmodels.test('full', extra_argv=['--exe', '--exclude=test_sarimax', '--exclude=test_structural', '--exclude=test_dynamic_factor', '--exclude=test_varmax']).wasSuccessful())"
+  - pytest --pyargs statsmodels
   - cd ..
 
 artifacts:
