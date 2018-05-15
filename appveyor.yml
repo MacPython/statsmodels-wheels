@@ -8,6 +8,8 @@ environment:
     PKG_NAME: statsmodels
     NP_BUILD_DEP: "numpy==1.10.4"
     NP_TEST_DEP: "numpy==1.10.4"
+    SP_BUILD_DEP: "scipy==1.0"
+    SP_TEST_DEP: "scipy==1.0"
     EXTRA_FLAGS: ""
     CYTHON_DEP: "Cython==0.27.3"
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
@@ -41,7 +43,7 @@ install:
   - echo "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 > "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64/vcvars64.bat"
 
   # Install the build dependencies of the project.
-  - pip install %NP_BUILD_DEP% %CYTHON_DEP% scipy
+  - pip install %NP_BUILD_DEP% %SP_BUILD_DEP% %CYTHON_DEP%
   # Pin wheel to 0.26 to avoid Windows ABI tag for built wheel
   - pip install wheel==0.26
   # Build wheel
@@ -55,7 +57,7 @@ build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
   # Install the test dependencies
-  - pip install %NP_TEST_DEP% patsy pandas nose pytest pytest-xdist
+  - pip install %NP_TEST_DEP% %SP_TEST_DEP% patsy pandas nose pytest pytest-xdist
   - pip install --pre --no-index --find-links .\%REPO_DIR%\dist %PKG_NAME%
   # Change into an innocuous directory and find tests from installation
   - mkdir for_testing

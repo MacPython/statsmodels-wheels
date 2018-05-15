@@ -5,7 +5,10 @@ env:
       - PLAT=x86_64
       - UNICODE_WIDTH=32
       - NP_BUILD_DEP="numpy==1.8.2"
-      - NP_TEST_DEP="numpy==1.8.2"
+      # Pandas currently needs 1.9.0
+      - NP_TEST_DEP="numpy==1.9.0"
+      - SP_BUILD_DEP="scipy==0.16.0"
+      - SP_TEST_DEP="scipy==0.16.0"
       - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
       - MANYLINUX_URL=https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com
       # Following generated with
@@ -67,12 +70,16 @@ matrix:
         - MB_PYTHON_VERSION=3.6
         - NP_BUILD_DEP=numpy==1.11.3
         - NP_TEST_DEP=numpy==1.11.3
+        - SP_BUILD_DEP=numpy==0.19.0
+        - SP_TEST_DEP=scipy==0.19.0
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
         - PLAT=i686
         - NP_BUILD_DEP=numpy==1.9.3
         - NP_TEST_DEP=numpy==1.9.3
+        - SP_BUILD_DEP=numpy==0.19.0
+        - SP_TEST_DEP=scipy==0.19.0
     - os: osx
       language: generic
       env: MB_PYTHON_VERSION=2.7
@@ -93,6 +100,8 @@ matrix:
         - MB_PYTHON_VERSION=3.6
         - NP_BUILD_DEP=numpy==1.11.3
         - NP_TEST_DEP=numpy==1.11.3
+        - SP_BUILD_DEP=numpy==0.19.0
+        - SP_TEST_DEP=scipy==0.19.0
 
 before_install:
     - if [ "$TRAVIS_BRANCH" == "master" ]; then
