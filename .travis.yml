@@ -4,8 +4,8 @@ env:
       - BUILD_COMMIT=v0.9.0
       - PLAT=x86_64
       - UNICODE_WIDTH=32
-      - NP_BUILD_DEP="numpy==1.8.2"
       # Pandas currently needs 1.9.0
+      - NP_BUILD_DEP="numpy==1.9.0"
       - NP_TEST_DEP="numpy==1.9.0"
       - SP_BUILD_DEP="scipy==0.16.0"
       - SP_TEST_DEP="scipy==0.16.0"
