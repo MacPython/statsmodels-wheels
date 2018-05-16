@@ -3,7 +3,7 @@
 
 environment:
   global:
-    BUILD_COMMIT: v0.9.0
+    BUILD_COMMIT: f1d5eddd4
     REPO_DIR: statsmodels
     PKG_NAME: statsmodels
     NP_BUILD_DEP: "numpy==1.10.4"
@@ -48,6 +48,8 @@ install:
   - pip install wheel==0.26
   # Build wheel
   - cd %REPO_DIR%
+  # Add my repository, for fixes
+  - git remote add mb https://github.com/matthew-brett/statsmodels.git --fetch
   - git submodule update --init
   - git checkout %BUILD_COMMIT%
   - python setup.py bdist_wheel
