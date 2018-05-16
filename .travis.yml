@@ -1,7 +1,8 @@
 env:
   global:
       - REPO_DIR=statsmodels
-      - BUILD_COMMIT=v0.9.0
+      # My pull request for pandas fixes
+      - BUILD_COMMIT=0219b2010
       - PLAT=x86_64
       - UNICODE_WIDTH=32
       - NP_BUILD_DEP="numpy==1.9.0"
