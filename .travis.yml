@@ -102,7 +102,7 @@ before_install:
 install:
     # Maybe get and clean and patch source
     # Add my repo
-    - git remote add mb https://github.com/matthew-brett/statsmodels.git --fetch
+    - (cd $REPO_DIR && git remote add mb https://github.com/matthew-brett/statsmodels.git --fetch)
     - clean_code $REPO_DIR $BUILD_COMMIT
     - build_wheel $REPO_DIR $PLAT
 
