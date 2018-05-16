@@ -46,11 +46,11 @@ install:
   - pip install %NP_BUILD_DEP% %SP_BUILD_DEP% %CYTHON_DEP%
   # Pin wheel to 0.26 to avoid Windows ABI tag for built wheel
   - pip install wheel==0.26
+  - git submodule update --init
   # Build wheel
   - cd %REPO_DIR%
   # Add my repository, for fixes
   - git remote add mb https://github.com/matthew-brett/statsmodels.git --fetch
-  - git submodule update --init
   - git checkout %BUILD_COMMIT%
   - python setup.py bdist_wheel
   - cd ..
