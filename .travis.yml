@@ -31,28 +31,13 @@ matrix:
     - os: linux
       env:
         - MB_PYTHON_VERSION=2.7
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=2.7
-        - UNICODE_WIDTH=16
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=2.7
-        - PLAT=i686
+    # Note no 16-bit Unicode builds - Pandas doesn't build these, I don't think
+    # anyone is using them, these days.
     - os: linux
       env:
         - MB_PYTHON_VERSION=2.7
         - PLAT=i686
-        - UNICODE_WIDTH=16
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.4
-        - NP_TEST_DEP=numpy==1.9.3
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.4
-        - NP_TEST_DEP=numpy==1.9.3
-        - PLAT=i686
+    # Pandas no longer supports Python 3.4
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.5
@@ -69,14 +54,14 @@ matrix:
         - MB_PYTHON_VERSION=3.6
         - NP_BUILD_DEP=numpy==1.11.3
         - NP_TEST_DEP=numpy==1.11.3
-        - SP_BUILD_DEP=numpy==0.19.0
+        - SP_BUILD_DEP=scipy==0.19.0
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
         - PLAT=i686
         - NP_BUILD_DEP=numpy==1.9.3
         - NP_TEST_DEP=numpy==1.9.3
-        - SP_BUILD_DEP=numpy==0.19.0
+        - SP_BUILD_DEP=scipy==0.19.0
     - os: osx
       language: generic
       env: MB_PYTHON_VERSION=2.7
@@ -97,7 +82,7 @@ matrix:
         - MB_PYTHON_VERSION=3.6
         - NP_BUILD_DEP=numpy==1.11.3
         - NP_TEST_DEP=numpy==1.11.3
-        - SP_BUILD_DEP=numpy==0.19.0
+        - SP_BUILD_DEP=scipy==0.19.0
 
 before_install:
     - if [ "$TRAVIS_BRANCH" == "master" ]; then
