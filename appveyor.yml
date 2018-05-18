@@ -6,8 +6,8 @@ environment:
     BUILD_COMMIT: f1d5eddd4
     REPO_DIR: statsmodels
     PKG_NAME: statsmodels
-    NP_BUILD_DEP: "numpy==1.10.4"
-    NP_TEST_DEP: "numpy==1.10.4"
+    NP_BUILD_DEP: "numpy==1.11.0"
+    NP_TEST_DEP: "numpy==1.11.0"
     SP_BUILD_DEP: "scipy"
     SP_TEST_DEP: "scipy"
     EXTRA_FLAGS: ""
