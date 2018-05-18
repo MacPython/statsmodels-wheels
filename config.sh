@@ -16,5 +16,5 @@ function run_tests {
     # Runs tests on installed distribution from an empty directory
     python --version
     python -c 'import statsmodels.api as sm; sm.show_versions();'
-    pytest --pyargs statsmodels
+    # pytest --pyargs statsmodels
 }
