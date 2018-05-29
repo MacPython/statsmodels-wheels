@@ -6,12 +6,12 @@ We automate wheel building using this custom github repository that builds on
 the Travis-CI Linux and macOS machines, and the Appveyor VMs.
 
 The Travis-CI interface for the builds is
-https://travis-ci.org/MacPython/nipy-wheels
+https://travis-ci.org/MacPython/statsmodels-wheels
 
 Appveyor interface at
-https://ci.appveyor.com/project/matthew-brett/nipy-wheels
+https://ci.appveyor.com/project/matthew-brett/statsmodels-wheels
 
-The driving github repository is
+The driving Github repository is
 https://github.com/MacPython/statsmodels-wheels
 
 Using the repository
