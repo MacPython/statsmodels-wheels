@@ -3,13 +3,14 @@
 
 environment:
   global:
-    BUILD_COMMIT: v0.9.0
+    BUILD_COMMIT: master
     REPO_DIR: statsmodels
     PKG_NAME: statsmodels
     NP_BUILD_DEP: "numpy==1.11.0"
     NP_TEST_DEP: "numpy==1.11.0"
     SP_BUILD_DEP: "scipy"
     SP_TEST_DEP: "scipy"
+    PANDAS_DEP: "pandas==0.20"
     EXTRA_FLAGS: ""
     CYTHON_DEP: "Cython==0.27.3"
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
@@ -26,15 +27,19 @@ environment:
       # Need 1.13 for h5py (h5py linked against 1.13)
       NP_BUILD_DEP: "numpy==1.13"
       NP_TEST_DEP: "numpy==1.13"
+      PANDAS_DEP: "pandas"
     - PYTHON: C:\Python36-x64
       NP_BUILD_DEP: "numpy==1.13"
       NP_TEST_DEP: "numpy==1.13"
+      PANDAS_DEP: "pandas"
     - PYTHON: C:\Python37
       NP_BUILD_DEP: "numpy==1.14.5"
       NP_TEST_DEP: "numpy==1.14.5"
+      PANDAS_DEP: "pandas"
     - PYTHON: C:\Python37-x64
       NP_BUILD_DEP: "numpy==1.14.5"
       NP_TEST_DEP: "numpy==1.14.5"
+      PANDAS_DEP: "pandas"
 
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
@@ -66,8 +71,6 @@ install:
   - git submodule update --init
   # Build wheel
   - cd %REPO_DIR%
-  # Add my repository, for fixes
-  - git remote add mb https://github.com/matthew-brett/statsmodels.git --fetch
   - git checkout %BUILD_COMMIT%
   - python setup.py bdist_wheel
   - cd ..
@@ -76,7 +79,7 @@ build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
   # Install the test dependencies
-  - pip install %NP_TEST_DEP% %SP_TEST_DEP% patsy pandas nose "pytest<4" pytest-xdist
+  - pip install %NP_TEST_DEP% %SP_TEST_DEP% patsy %PANDAS_DEP% nose pytest pytest-xdist
   - pip install --pre --no-index --find-links .\%REPO_DIR%\dist %PKG_NAME%
   # Change into an innocuous directory and find tests from installation
   - mkdir for_testing
@@ -85,7 +88,7 @@ test_script:
   - 'echo backend : agg > matplotlibrc'
   - python --version
   - python -c "import statsmodels.api as sm; sm.show_versions();"
-  - python -c "import statsmodels; statsmodels.test(exit=True)"
+  - python -c "import statsmodels; statsmodels.test(extra_args=['--skip-slow', '--skip-examples', '--tb=short'], exit=True)"
   - cd ..
 
 artifacts:
