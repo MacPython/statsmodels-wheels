@@ -85,7 +85,7 @@ test_script:
   - 'echo backend : agg > matplotlibrc'
   - python --version
   - python -c "import statsmodels.api as sm; sm.show_versions();"
-  - python -c "import statsmodels; statsmodels.test()"
+  - python -c 'import statsmodels; statsmodels.test(exit=True)'
   - cd ..
 
 artifacts:
