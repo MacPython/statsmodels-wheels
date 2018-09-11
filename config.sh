@@ -15,6 +15,8 @@ function build_wheel {
 function run_tests {
     # Runs tests on installed distribution from an empty directory
     python --version
+    # Check OpenBLAS core
+    export OPENBLAS_VERBOSE=2
     python -c 'import statsmodels.api as sm; sm.show_versions();'
     python -c 'import statsmodels; statsmodels.test(exit=True)'
 }
