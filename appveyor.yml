@@ -3,7 +3,7 @@
 
 environment:
   global:
-    BUILD_COMMIT: master
+    BUILD_COMMIT: 797c613
     REPO_DIR: statsmodels
     PKG_NAME: statsmodels
     NP_BUILD_DEP: "numpy==1.11.0"
@@ -72,6 +72,8 @@ install:
   - git submodule update --init
   # Build wheel
   - cd %REPO_DIR%
+  - git remote add https://github.com/thequackdaddy/statsmodels
+  - git fetch --all
   - git checkout %BUILD_COMMIT%
   - python setup.py bdist_wheel
   - cd ..
