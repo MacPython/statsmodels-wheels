@@ -104,7 +104,7 @@ before_install:
           UPLOAD_ARGS="--no-update-index";
       fi
     - BUILD_DEPENDS="$NP_BUILD_DEP $SP_BUILD_DEP Cython"
-    - TEST_DEPENDS="$NP_TEST_DEP $SP_TEST_DEP $PANDAS_DEP nose pytest pytest-xdist pytest-randomly"
+    - TEST_DEPENDS="$NP_TEST_DEP $SP_TEST_DEP $PANDAS_DEP nose pytest pytest-xdist"
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
     - before_install
