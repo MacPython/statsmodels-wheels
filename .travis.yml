@@ -16,6 +16,7 @@ env:
       - secure: "J6Qw/teEz1ZotJIFI113Zn9oXJRmDgRR9Ue3ZsHjhDVV6EEHS2UwXDrqX/2NQyGax3CONiGgDkZ6TThz+yv4vdUY/8/lC6IC1kXTGIs5UjgQ1BTCQG7tKOK/ce3EEPqTcgAd1PnwyLpab5dLWIcyLJkCnWQHDNU0HiuBjp3w+2c="
       # Commit when running from master branch
       - DAILY_COMMIT=master
+      - PYTHONHASHSEED=0
 
 language: python
 # Default Python version is usually 2.7
