@@ -72,8 +72,6 @@ install:
   - git submodule update --init
   # Build wheel
   - cd %REPO_DIR%
-  - git remote add https://github.com/thequackdaddy/statsmodels
-  - git fetch --all
   - git checkout %BUILD_COMMIT%
   - python setup.py bdist_wheel
   - cd ..
