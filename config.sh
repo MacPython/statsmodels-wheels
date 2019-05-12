@@ -18,6 +18,9 @@ function run_tests {
     # Check OpenBLAS core
     export OPENBLAS_VERBOSE=2
     python -c 'import statsmodels.api as sm; sm.show_versions();'
-    [ -n "$IS_OSX" ] && python -c 'import statsmodels; statsmodels.test(extra_args=["--skip-slow", "--skip-examples", "--tb=short", "-n 2"], exit=True)' && exit
-    python -c 'import statsmodels; statsmodels.test(extra_args=["--skip-slow", "--skip-examples", "--tb=short"], exit=True)'
+    if [ -n "$IS_OSX" ]; then
+        python -c 'import statsmodels; statsmodels.test(extra_args=["--skip-slow", "--skip-examples", "--tb=short", "-n 2"], exit=True)'
+    else
+        python -c 'import statsmodels; statsmodels.test(extra_args=["--skip-slow", "--skip-examples", "--tb=short"], exit=True)'
+    fi
 }
