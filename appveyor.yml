@@ -88,7 +88,7 @@ test_script:
   - 'echo backend : agg > matplotlibrc'
   - python --version
   - python -c "import statsmodels.api as sm; sm.show_versions();"
-  - python -c "import statsmodels; statsmodels.test(extra_args=['--skip-slow', '--skip-examples', '--tb=short'], exit=True)"
+  - python -c "import statsmodels; statsmodels.test(extra_args=['--skip-slow', '--skip-examples', '--tb=short', '-n 2'], exit=True)"
   - cd ..
 
 artifacts:
