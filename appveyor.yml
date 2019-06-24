@@ -3,7 +3,7 @@
 
 environment:
   global:
-    BUILD_COMMIT: v0.10.0rc2
+    BUILD_COMMIT: v0.10.0
     REPO_DIR: statsmodels
     PKG_NAME: statsmodels
     NP_BUILD_DEP: "numpy==1.11.0"
