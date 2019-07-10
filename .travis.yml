@@ -1,14 +1,14 @@
 env:
   global:
       - REPO_DIR=statsmodels
-      - BUILD_COMMIT=v0.10.0
+      - BUILD_COMMIT=master
       - PLAT=x86_64
       - UNICODE_WIDTH=32
-      - NP_BUILD_DEP="numpy==1.11.0"
-      - NP_TEST_DEP="numpy==1.11.0"
-      - SP_BUILD_DEP="scipy==0.18.0"
-      - SP_TEST_DEP="scipy==0.18.0"
-      - PANDAS_DEP="pandas==0.20.3"
+      - NP_BUILD_DEP="numpy==1.14.0"
+      - NP_TEST_DEP="numpy==1.14.0"
+      - SP_BUILD_DEP="scipy==1.0.0"
+      - SP_TEST_DEP="scipy==1.0.0"
+      - PANDAS_DEP="pandas==0.21.0"
       - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
       - MANYLINUX_URL=https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com
       # Following generated with
@@ -47,28 +47,25 @@ matrix:
       env:
         - MB_PYTHON_VERSION=3.5
         - PLAT=i686
+        - PANDAS_DEP="pandas==0.23.4"
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
-        - NP_BUILD_DEP=numpy==1.11.3
-        - NP_TEST_DEP=numpy==1.11.3
-        - SP_BUILD_DEP=scipy==0.19.0
-        - SP_TEST_DEP=scipy==0.19.0
+        - NP_TEST_DEP=numpy==1.15.0
+        - SP_TEST_DEP=scipy==1.1.0
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
         - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.11.3
-        - NP_TEST_DEP=numpy==1.11.3
-        - SP_BUILD_DEP=scipy==0.19.0
-        - SP_TEST_DEP=scipy==0.19.0
+        - NP_TEST_DEP=numpy==1.15.0
+        - SP_TEST_DEP=scipy==1.1.0
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.7
         - NP_BUILD_DEP=numpy==1.14.5
-        - NP_TEST_DEP=numpy==1.14.5
+        - NP_TEST_DEP=numpy==1.16.0
         - SP_BUILD_DEP=scipy==1.1.0
-        - SP_TEST_DEP=scipy==1.1.0
+        - SP_TEST_DEP=scipy==1.2.0
         - PANDAS_DEP=pandas
     - os: osx
       language: generic
@@ -81,18 +78,16 @@ matrix:
       language: generic
       env:
         - MB_PYTHON_VERSION=3.6
-        - NP_BUILD_DEP=numpy==1.11.3
-        - NP_TEST_DEP=numpy==1.11.3
-        - SP_BUILD_DEP=scipy==0.19.0
-        - SP_TEST_DEP=scipy==0.19.0
+        - NP_TEST_DEP=numpy==1.15.0
+        - SP_TEST_DEP=scipy==1.1
     - os: osx
       language: generic
       env:
         - MB_PYTHON_VERSION=3.7
         - NP_BUILD_DEP=numpy==1.14.5
-        - NP_TEST_DEP=numpy==1.14.5
+        - NP_TEST_DEP=numpy==1.16.0
         - SP_BUILD_DEP=scipy==1.1.0
-        - SP_TEST_DEP=scipy==1.1.0
+        - SP_TEST_DEP=scipy==1.2.0
         - PANDAS_DEP=pandas
 
 before_install:
