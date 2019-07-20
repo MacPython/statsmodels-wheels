@@ -32,16 +32,6 @@ matrix:
   include:
     - os: linux
       env:
-        - MB_PYTHON_VERSION=2.7
-    # Note no 16-bit Unicode builds - Pandas doesn't build these, I don't think
-    # anyone is using them, these days.
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=2.7
-        - PLAT=i686
-    # Pandas no longer supports Python 3.4
-    - os: linux
-      env:
         - MB_PYTHON_VERSION=3.5
     - os: linux
       env:
@@ -67,9 +57,6 @@ matrix:
         - SP_BUILD_DEP=scipy==1.1.0
         - SP_TEST_DEP=scipy==1.2.0
         - PANDAS_DEP=pandas
-    - os: osx
-      language: generic
-      env: MB_PYTHON_VERSION=2.7
     - os: osx
       language: generic
       env:
