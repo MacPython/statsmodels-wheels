@@ -12,7 +12,7 @@ environment:
     SP_TEST_DEP: "scipy==1.2"
     PANDAS_DEP: "pandas==0.20"
     EXTRA_FLAGS: ""
-    CYTHON_DEP: "Cython==0.27.3"
+    CYTHON_DEP: "Cython==0.29.4"
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
     WHEELHOUSE_UPLOADER_SECRET:
       secure: 9s0gdDGnNnTt7hvyNpn0/ZzOMGPdwPp2SewFTfGzYk7uI+rdAN9rFq2D1gAP4NQh
@@ -20,37 +20,16 @@ environment:
     PYTHONHASHSEED: 0  # For xdist
 
   matrix:
-    - PYTHON: C:\Python27
-    - PYTHON: C:\Python27-x64
-    - PYTHON: C:\Python35
-    - PYTHON: C:\Python35-x64
-    - PYTHON: C:\Python36
-      # Need 1.13 for h5py (h5py linked against 1.13)
-      NP_BUILD_DEP: "numpy==1.13.3"
-      NP_TEST_DEP: "numpy==1.13.3"
-      PANDAS_DEP: "pandas==0.25.0"
-    - PYTHON: C:\Python36-x64
-      NP_BUILD_DEP: "numpy==1.13.3"
-      NP_TEST_DEP: "numpy==1.13.3"
-      PANDAS_DEP: "pandas==0.25.0"
-    - PYTHON: C:\Python37
-      NP_BUILD_DEP: "numpy==1.14.5"
-      NP_TEST_DEP: "numpy==1.14.5"
-      PANDAS_DEP: "pandas"
-    - PYTHON: C:\Python37-x64
-      NP_BUILD_DEP: "numpy==1.14.5"
-      NP_TEST_DEP: "numpy==1.14.5"
-      PANDAS_DEP: "pandas"
     - PYTHON: C:\Python38
-      NP_BUILD_DEP: "numpy==1.17.4"
-      NP_TEST_DEP: "numpy==1.17.4"
+      NP_BUILD_DEP: "numpy==1.17.5"
+      NP_TEST_DEP: "numpy==1.17.5"
       SP_BUILD_DEP: "scipy==1.3.2"
       SP_TEST_DEP: "scipy==1.3.2"
       PANDAS_DEP: "pandas"
       CYTHON_DEP: "Cython==0.29.14"
     - PYTHON: C:\Python38-x64
-      NP_BUILD_DEP: "numpy==1.17.4"
-      NP_TEST_DEP: "numpy==1.17.4"
+      NP_BUILD_DEP: "numpy==1.17.5"
+      NP_TEST_DEP: "numpy==1.17.5"
       SP_BUILD_DEP: "scipy==1.3.2"
       SP_TEST_DEP: "scipy==1.3.2"
       PANDAS_DEP: "pandas"
