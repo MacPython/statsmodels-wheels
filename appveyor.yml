@@ -6,13 +6,13 @@ environment:
     BUILD_COMMIT: master
     REPO_DIR: statsmodels
     PKG_NAME: statsmodels
-    NP_BUILD_DEP: "numpy==1.14.0"
-    NP_TEST_DEP: "numpy==1.14.0"
-    SP_BUILD_DEP: "scipy==1.0"
-    SP_TEST_DEP: "scipy==1.0"
-    PANDAS_DEP: "pandas==0.24"
+    NP_BUILD_DEP: "numpy==1.14.5"
+    NP_TEST_DEP: "numpy==1.14.5"
+    SP_BUILD_DEP: "scipy==1.1.0"
+    SP_TEST_DEP: "scipy==1.1.0"
+    PANDAS_DEP: "pandas==1.0.3"
     EXTRA_FLAGS: ""
-    CYTHON_DEP: "Cython==0.29.14"
+    CYTHON_DEP: "Cython==0.29.17"
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
     WHEELHOUSE_UPLOADER_SECRET:
       secure: 9s0gdDGnNnTt7hvyNpn0/ZzOMGPdwPp2SewFTfGzYk7uI+rdAN9rFq2D1gAP4NQh
@@ -20,8 +20,6 @@ environment:
     PYTHONHASHSEED: 0  # For xdist
 
   matrix:
-    - PYTHON: C:\Python35
-    - PYTHON: C:\Python35-x64
     - PYTHON: C:\Python36
       # Need 1.13 for h5py (h5py linked against 1.13)
       NP_TEST_DEP: "numpy==1.15"
