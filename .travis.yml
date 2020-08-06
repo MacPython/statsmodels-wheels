@@ -4,11 +4,11 @@ env:
       - BUILD_COMMIT=master
       - PLAT=x86_64
       - UNICODE_WIDTH=32
-      - NP_BUILD_DEP="numpy==1.16.6"
-      - NP_TEST_DEP="numpy==1.16.6"
-      - SP_BUILD_DEP="scipy==1.1.0"
-      - SP_TEST_DEP="scipy==1.1.0"
-      - PANDAS_DEP="pandas==1.0.3"
+      - NP_BUILD_DEP="numpy==1.18.5"
+      - NP_TEST_DEP="numpy==1.18.5"
+      - SP_BUILD_DEP="scipy==1.5.2"
+      - SP_TEST_DEP="scipy==1.5.2"
+      - PANDAS_DEP="pandas==1.0.5"
       - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
       - MANYLINUX_URL=https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com
       # Following generated with
@@ -36,21 +36,17 @@ matrix:
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.7
-        - SP_TEST_DEP=scipy==1.2.3
         - PANDAS_DEP=pandas
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=i686
-        - SP_TEST_DEP=scipy==1.2.3
         - PANDAS_DEP=pandas
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.8
         - NP_BUILD_DEP=numpy==1.17.5
         - NP_TEST_DEP=numpy==1.17.5
-        - SP_BUILD_DEP=scipy==1.3.3
-        - SP_TEST_DEP=scipy==1.3.3
         - PANDAS_DEP=pandas
     - os: linux
       env:
@@ -58,8 +54,6 @@ matrix:
         - PLAT=i686
         - NP_BUILD_DEP=numpy==1.17.5
         - NP_TEST_DEP=numpy==1.17.5
-        - SP_BUILD_DEP=scipy==1.3.3
-        - SP_TEST_DEP=scipy==1.3.3
         - PANDAS_DEP=pandas
     - os: osx
       language: generic
@@ -69,7 +63,6 @@ matrix:
       language: generic
       env:
         - MB_PYTHON_VERSION=3.7
-        - SP_TEST_DEP=scipy==1.2.3
         - PANDAS_DEP=pandas
     - os: osx
       language: generic
@@ -77,8 +70,6 @@ matrix:
         - MB_PYTHON_VERSION=3.8
         - NP_BUILD_DEP=numpy==1.17.5
         - NP_TEST_DEP=numpy==1.17.5
-        - SP_BUILD_DEP=scipy==1.3.3
-        - SP_TEST_DEP=scipy==1.3.3
         - PANDAS_DEP=pandas
 
 before_install:
