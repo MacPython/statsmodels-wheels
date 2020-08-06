@@ -8,11 +8,11 @@ environment:
     PKG_NAME: statsmodels
     NP_BUILD_DEP: "numpy==1.16.6"
     NP_TEST_DEP: "numpy==1.16.6"
-    SP_BUILD_DEP: "scipy==1.1.0"
-    SP_TEST_DEP: "scipy==1.1.0"
+    SP_BUILD_DEP: "scipy==1.2.3"
+    SP_TEST_DEP: "scipy==1.2.3"
     PANDAS_DEP: "pandas"
     EXTRA_FLAGS: ""
-    CYTHON_DEP: "Cython==0.29.17"
+    CYTHON_DEP: "Cython==0.29.21"
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
     WHEELHOUSE_UPLOADER_SECRET:
       secure: 9s0gdDGnNnTt7hvyNpn0/ZzOMGPdwPp2SewFTfGzYk7uI+rdAN9rFq2D1gAP4NQh
@@ -21,7 +21,6 @@ environment:
 
   matrix:
     - PYTHON: C:\Python36
-      # Need 1.13 for h5py (h5py linked against 1.13)
     - PYTHON: C:\Python36-x64
     - PYTHON: C:\Python37
       SP_TEST_DEP: "scipy==1.2.3"
