@@ -95,9 +95,8 @@ script:
     - install_run $PLAT
 
 after_success:
-    # Upload wheels to Rackspace container
-    - pip install futures==3.1.1 wheelhouse-uploader
-    - python -m wheelhouse_uploader upload --local-folder
-          ${TRAVIS_BUILD_DIR}/wheelhouse/
-          $UPLOAD_ARGS
-          $CONTAINER
+    # Upload wheels to anaconda.org
+    - ls ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
+    - pip install anaconda-client --upgrade
+    - anaconda -t $ANACONDA_TOKEN upload --force -u $ANACONDA_USERNAME ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
+
