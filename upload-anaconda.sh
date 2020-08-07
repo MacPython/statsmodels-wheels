@@ -19,7 +19,6 @@ ls ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
 
 if [ "$TRAVIS_BRANCH" == "master" ]; then
     TOKEN=${ANACONDA_TOKEN};
-    source extra_functions.sh;
     for f in wheelhouse/*.whl; do rename_wheel $f; done;
 fi
 
