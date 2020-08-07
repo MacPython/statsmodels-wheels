@@ -98,5 +98,5 @@ after_success:
     # Upload wheels to anaconda.org
     - ls ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
     - pip install anaconda-client --upgrade
-    - anaconda -t $ANACONDA_TOKEN upload --force -u $ANACONDA_USERNAME ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
+    - anaconda -t $ANACONDA_TOKEN upload --force -u $ANACONDA_USERNAME ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl --package statsmodels
 
