@@ -92,14 +92,9 @@ artifacts:
   - path: $(REPO_DIR)\dist\*
 
 on_success:
-  # Upload the generated wheel package to Rackspace
-  # On Windows, Apache Libcloud cannot find a standard CA cert bundle so we
-  # disable the ssl checks.
-  - pip install wheelhouse-uploader
-  - python -m wheelhouse_uploader upload
-    --no-ssl-check --local-folder=%REPO_DIR%\dist
-    %UPLOAD_ARGS%
-    %CONTAINER%
+  # Upload the generated wheel package to Anaconda.org
+  - pip install anacond-client
+  - anaconda -t %ANACONDA_TOKEN% upload --force -u %ANACONDA_USERNAME% --package statsmodels %REPO_DIR%/dist/*.whl
 
 cache:
   # Use the appveyor cache to avoid re-downloading large archives such
