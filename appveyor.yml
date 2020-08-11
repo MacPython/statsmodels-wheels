@@ -3,7 +3,7 @@
 
 environment:
   global:
-    BUILD_COMMIT: master
+    BUILD_COMMIT: "0.12.0rc0"
     REPO_DIR: statsmodels
     PKG_NAME: statsmodels
     NP_BUILD_DEP: "numpy==1.16.6"
@@ -91,10 +91,10 @@ artifacts:
   # Archive the generated wheel package in the ci.appveyor.com build report.
   - path: $(REPO_DIR)\dist\*
 
-on_success:
+# on_success:
   # Upload the generated wheel package to Anaconda.org
-  - pip install anacond-client
-  - anaconda -t %ANACONDA_TOKEN% upload --force -u %ANACONDA_USERNAME% --package statsmodels %REPO_DIR%/dist/*.whl
+  # - pip install anacond-client
+  # - anaconda -t %ANACONDA_TOKEN% upload --force -u %ANACONDA_USERNAME% --package statsmodels %REPO_DIR%/dist/*.whl
 
 cache:
   # Use the appveyor cache to avoid re-downloading large archives such
