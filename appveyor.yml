@@ -1,9 +1,6 @@
-# vim ft=yaml
-# CI on Windows via appveyor
-
 environment:
   global:
-    BUILD_COMMIT: "0.12.0rc0"
+    BUILD_COMMIT: "master"
     REPO_DIR: statsmodels
     PKG_NAME: statsmodels
     NP_BUILD_DEP: "numpy==1.16.6"
@@ -13,9 +10,6 @@ environment:
     PANDAS_DEP: "pandas"
     EXTRA_FLAGS: ""
     CYTHON_DEP: "Cython==0.29.21"
-    WHEELHOUSE_UPLOADER_USERNAME: travis-worker
-    WHEELHOUSE_UPLOADER_SECRET:
-      secure: 9s0gdDGnNnTt7hvyNpn0/ZzOMGPdwPp2SewFTfGzYk7uI+rdAN9rFq2D1gAP4NQh
     DAILY_COMMIT: master
     PYTHONHASHSEED: 0  # For xdist
 
@@ -91,14 +85,14 @@ artifacts:
   # Archive the generated wheel package in the ci.appveyor.com build report.
   - path: $(REPO_DIR)\dist\*
 
-# on_success:
+on_success:
   # Upload the generated wheel package to Anaconda.org
-  # - pip install anacond-client
-  # - anaconda -t %ANACONDA_TOKEN% upload --force -u %ANACONDA_USERNAME% --package statsmodels %REPO_DIR%/dist/*.whl
+  # Requires ANACONDA_TOKEN to be set
+  - ps: . .\anaconda.org\upload-anaconda.ps1
 
 cache:
   # Use the appveyor cache to avoid re-downloading large archives such
   # the MKL numpy and scipy wheels mirrored on a rackspace cloud
   # container, speed up the appveyor jobs and reduce bandwidth
   # usage on our rackspace account.
-  - '%APPDATA%\pip\Cache'
+  - '%LOCALAPPDATA%\pip\cache'
