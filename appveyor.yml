@@ -12,6 +12,7 @@ environment:
     CYTHON_DEP: "Cython==0.29.21"
     DAILY_COMMIT: master
     PYTHONHASHSEED: 0  # For xdist
+    ANACONDA_USERNAME: "statsmodels"
 
   matrix:
     - PYTHON: C:\Python36
@@ -40,7 +41,6 @@ init:
         if ($env:DAILY_COMMIT) { $env:BUILD_COMMIT = $env:DAILY_COMMIT }
       } else {
         $env:CONTAINER = "wheels"
-        $env:UPLOAD_ARGS = "--no-update-index"
       }
 
 install:

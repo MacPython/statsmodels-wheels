@@ -12,5 +12,7 @@ if (Test-Path env:ANACONDA_TOKEN) {
 
 if (Test-Path env:TOKEN) {
     echo "Uploading to anaconda.org"
-    anaconda -t $env:ANACONDA_TOKEN upload -u statsmodels --force  $env:REPO_DIR/dist/*.whl
+    anaconda -t $env:ANACONDA_TOKEN upload -u $env:ANACONDA_USERNAME --force  $env:REPO_DIR/dist/*.whl
+} else {
+    echo "Not uploading since token not set (expected if this is a pull request)"
 }
