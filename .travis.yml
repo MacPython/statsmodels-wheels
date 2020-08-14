@@ -1,7 +1,7 @@
 env:
   global:
       - REPO_DIR=statsmodels
-      - BUILD_COMMIT=0.12.0rc0
+      - BUILD_COMMIT=master
       - PLAT=x86_64
       - UNICODE_WIDTH=32
       - NP_BUILD_DEP="numpy==1.18.5"
@@ -96,4 +96,10 @@ script:
 
 after_success:
     # Upload wheels to anaconda.org
-    - source upload-anaconda.sh
+    - sudo apt-get -y install software-properties-common
+    - sudo add-apt-repository -y ppa:deadsnakes/ppa
+    - sudo apt-get update
+    - sudo apt-get -y install python3.6 python3.6-dev
+    - wget https://bootstrap.pypa.io/get-pip.py
+    - sudo python3.6 get-pip.py
+    - source ./anaconda.org/upload-anaconda.sh
