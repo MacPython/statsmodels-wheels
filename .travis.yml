@@ -9,12 +9,8 @@ env:
       - SP_BUILD_DEP="scipy==1.5.2"
       - SP_TEST_DEP="scipy==1.5.2"
       - PANDAS_DEP="pandas==1.0.5"
-      - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
-      - MANYLINUX_URL=https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com
+      - ANACONDA_USERNAME=statsmodels
       # Following generated with
-      # travis encrypt -r MacPython/statsmodels-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
-      - secure: "J6Qw/teEz1ZotJIFI113Zn9oXJRmDgRR9Ue3ZsHjhDVV6EEHS2UwXDrqX/2NQyGax3CONiGgDkZ6TThz+yv4vdUY/8/lC6IC1kXTGIs5UjgQ1BTCQG7tKOK/ce3EEPqTcgAd1PnwyLpab5dLWIcyLJkCnWQHDNU0HiuBjp3w+2c="
-      # Commit when running from master branch
       - DAILY_COMMIT=master
       - PYTHONHASHSEED=0
 
@@ -96,10 +92,4 @@ script:
 
 after_success:
     # Upload wheels to anaconda.org
-    - sudo apt-get -y install software-properties-common
-    - sudo add-apt-repository -y ppa:deadsnakes/ppa
-    - sudo apt-get update
-    - sudo apt-get -y install python3.6 python3.6-dev
-    - wget https://bootstrap.pypa.io/get-pip.py
-    - sudo python3.6 get-pip.py
     - source ./anaconda.org/upload-anaconda.sh
