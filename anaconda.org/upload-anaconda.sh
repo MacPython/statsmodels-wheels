@@ -20,12 +20,16 @@ python3 ./anaconda.org/rename-wheels.py -d ${TRAVIS_BUILD_DIR}/wheelhouse/
 ls ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
 
 if [ "$TRAVIS_BRANCH" == "master" ]; then
-    TOKEN=${ANACONDA_TOKEN};
+    ANACONDA_TOKEN=${STATSMODELS_SCIPY_WHEELS_NIGHTLY_TOKEN};
+    ANACONDA_ORG="scipy-wheels-nightly"
+else
+    ANACONDA_TOKEN=${STATSMODELS_MULTIBUILD_WHEELS_STAGING_TOKEN};
+    ANACONDA_ORG="multibuild-wheels-staging"
 fi
 
-if [ -n "${TOKEN}" ]; then
-  echo "Uploading to anaconda.org"
-  anaconda -t ${TOKEN} upload -u ${ANACONDA_USERNAME} --force ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl;
+if [ -n "${ANACONDA_TOKEN}" ]; then
+  echo "Uploading to anaconda.org account: ${ANACONDA_TOKEN}"
+  anaconda -t ${ANACONDA_TOKEN} upload -u ${ANACONDA_ORG} --force ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl;
 else
   echo "Not uploading since token not set (expected if this is a pull request)"
 fi
