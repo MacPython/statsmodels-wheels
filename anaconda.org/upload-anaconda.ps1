@@ -15,7 +15,7 @@ else {
     $env:ANACONDA_ORG="multibuild-wheels-staging"
 }
 
-if (Test-Path env:TOKEN) {
+if (Test-Path env:ANACONDA_TOKEN) {
     echo "Uploading to anaconda.org account: $env:ANACONDA_ORG"
     anaconda -t $env:ANACONDA_TOKEN upload -u $env:ANACONDA_ORG --force  $env:REPO_DIR/dist/*.whl
 } else {
