@@ -1,6 +1,6 @@
 environment:
   global:
-    BUILD_COMMIT: "maintenance/0.12.x"
+    BUILD_COMMIT: "0.12.1"
     REPO_DIR: statsmodels
     PKG_NAME: statsmodels
     NP_BUILD_DEP: "numpy==1.16.6"
