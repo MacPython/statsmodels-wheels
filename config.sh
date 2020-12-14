@@ -17,6 +17,6 @@ function run_tests {
     python --version
     # Check OpenBLAS core
     export OPENBLAS_VERBOSE=2
-    echo python -c 'import statsmodels.api as sm; sm.show_versions();'
-    echo python -c 'import statsmodels; statsmodels.test(extra_args=["--skip-slow", "--skip-examples", "-n auto"], exit=True)'
+    python -c 'import statsmodels.api as sm; sm.show_versions();'
+    python -c 'import statsmodels; statsmodels.test(extra_args=["--skip-slow", "--skip-examples", "-n 2"], exit=True)'
 }

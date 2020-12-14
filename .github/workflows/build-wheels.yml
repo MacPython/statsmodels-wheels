@@ -2,7 +2,7 @@ name: Build wheels
 
 on:
   push:
-    branches: [ rel-0.12.0]
+    branches: [ rel-0.12.0 ]
   pull_request:
     branches: [ rel-0.12.0 ]
 
@@ -15,10 +15,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8]
-        os: [ubuntu-latest]
+        python-version: [3.7, 3.8, 3.9]
+        os: [ubuntu-latest, macos-latest]
         platform: [x64]
-        PLAT: [x86_64]
+        PLAT: [i686, x86_64]
+        exclude:
+          - os: macos-latest # macos-10.15
+            PLAT: i686
     env:
       REPO_DIR: statsmodels
       PKG_NAME: statsmodels
@@ -32,7 +35,7 @@ jobs:
       TRAVIS_PULL_REQUEST: ${{ github.event.number }}
       TRAVIS_BUILD_DIR: ${{ github.workspace }}
       SCIPY_WHEELS_NIGHTLY_ACCESS: ${{ secrets.SCIPY_WHEELS_NIGHTLY_ACCESS }}
-      MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_BUILD }}
+      MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
       MKL_NUM_THREADS: 1
       OMP_NUM_THREADS: 1
       OPENLAS_NUM_THREADS: 1
@@ -113,7 +116,6 @@ jobs:
         if [ "$TRAVIS_EVENT_TYPE" == "cron" ] || [ "$TRAVIS_EVENT_TYPE" == "push" ]; then
           pip install git+https://github.com/Anaconda-Server/anaconda-client
           ls ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
-          echo "anaconda --token ${TOKEN} upload --user ${ANACONDA_ORG} --force ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl"
           anaconda --token ${TOKEN} upload --user ${ANACONDA_ORG} --force ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
           echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
         fi
