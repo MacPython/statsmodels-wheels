@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.7, 3.8, 3.9]
         os: [ubuntu-latest, macos-latest]
         platform: [x64]
         PLAT: [i686, x86_64]
@@ -49,11 +49,11 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Pin Numpy, Scipy and Pandas version
       run: |
-        echo "NP_BUILD_DEP=$(echo numpy==1.19.2)" >> $GITHUB_ENV;
-        echo "NP_TEST_DEP=$(echo numpy==1.19.2)" >> $GITHUB_ENV;
-        echo "SP_BUILD_DEP=$(echo scipy==1.5.3)" >> $GITHUB_ENV;
-        echo "SP_TEST_DEP=$(echo scipy==1.5.3)" >> $GITHUB_ENV;
-        echo "PANDAS_DEP=$(echo pandas==1.1.3)" >> $GITHUB_ENV;
+        echo "NP_BUILD_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+        echo "NP_TEST_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+        echo "SP_BUILD_DEP=$(echo scipy==1.5.4)" >> $GITHUB_ENV;
+        echo "SP_TEST_DEP=$(echo scipy==1.5.4)" >> $GITHUB_ENV;
+        echo "PANDAS_DEP=$(echo pandas==1.1.5)" >> $GITHUB_ENV;
     - name: Setup Environment variables
       run: |
         if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "ANACONDA_ORG=scipy-wheels-nightly" >> $GITHUB_ENV; else echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV; fi
