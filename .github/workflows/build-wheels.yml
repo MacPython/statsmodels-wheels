@@ -58,7 +58,7 @@ jobs:
     - name: Setup Environment variables
       run: |
         if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "ANACONDA_ORG=scipy-wheels-nightly" >> $GITHUB_ENV; else echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV; fi
-        if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV; else echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $$GITHUB_ENV; fi
+        if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV; else echo "TOKEN=MULTIBUILD_WHEELS_STAGING_ACCESS" >> $$GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV; else echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "BUILD_COMMIT=master" >> $GITHUB_ENV; else echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV; fi
         if [ "macos-latest" == "${{ matrix.os }}" ]; then echo "TRAVIS_OS_NAME=osx" >> $GITHUB_ENV; else echo "TRAVIS_OS_NAME=${{ matrix.os }}" >> $GITHUB_ENV; fi
@@ -109,13 +109,13 @@ jobs:
         # used in Travis CI config, originally
         #
         # for merges (push events) we use the staging area instead;
-        # MULTIBUILD_WHEELS_STAGING_ACCESS is a secret token used in Travis
+        # MULTIBUILD_WHEELS_STAGING_ACCESS is a secret token used in GitHub Actions
         # CI config, originally generated at anaconda.org for
         # multibuild-wheels-staging
         # generated at anaconda.org for scipy-wheels-nightly
         if [ "$TRAVIS_EVENT_TYPE" == "cron" ] || [ "$TRAVIS_EVENT_TYPE" == "push" ]; then
           pip install git+https://github.com/Anaconda-Server/anaconda-client
           ls ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
-          anaconda --token ${TOKEN} upload --user ${ANACONDA_ORG} --force ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
+          anaconda -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
           echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
         fi
