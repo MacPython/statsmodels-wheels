@@ -113,8 +113,10 @@ jobs:
         # CI config, originally generated at anaconda.org for
         # multibuild-wheels-staging
         # generated at anaconda.org for scipy-wheels-nightly
+        ${TOKEN}
         if [ "$TRAVIS_EVENT_TYPE" == "cron" ] || [ "$TRAVIS_EVENT_TYPE" == "push" ]; then
           pip install git+https://github.com/Anaconda-Server/anaconda-client
+          echo "Token lenght is ${#TOKEN}"
           echo ${PWD}
           ls ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
           echo "anaconda -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl"
