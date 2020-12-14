@@ -59,6 +59,9 @@ jobs:
       run: |
         if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "ANACONDA_ORG=scipy-wheels-nightly" >> $GITHUB_ENV; else echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV; else echo "TOKEN=MULTIBUILD_WHEELS_STAGING_ACCESS" >> $$GITHUB_ENV; fi
+        echo "MB Token lenght is ${#MULTIBUILD_WHEELS_STAGING_ACCESS}"
+        echo "TOKEN=MULTIBUILD_WHEELS_STAGING_ACCESS" >> $$GITHUB_ENV
+        echo "Token lenght is ${#TOKEN}"
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV; else echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV; fi
         if [ "schedule" == "${{ github.event_name }}" ]; then echo "BUILD_COMMIT=master" >> $GITHUB_ENV; else echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV; fi
         if [ "macos-latest" == "${{ matrix.os }}" ]; then echo "TRAVIS_OS_NAME=osx" >> $GITHUB_ENV; else echo "TRAVIS_OS_NAME=${{ matrix.os }}" >> $GITHUB_ENV; fi
@@ -116,8 +119,6 @@ jobs:
         ${TOKEN}
         if [ "$TRAVIS_EVENT_TYPE" == "cron" ] || [ "$TRAVIS_EVENT_TYPE" == "push" ]; then
           pip install git+https://github.com/Anaconda-Server/anaconda-client
-          echo "Token lenght is ${#TOKEN}"
-          echo ${PWD}
           ls ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
           echo "anaconda -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl"
           anaconda -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
