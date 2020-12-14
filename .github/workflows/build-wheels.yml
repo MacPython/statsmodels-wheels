@@ -115,5 +115,5 @@ jobs:
           ls ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
           echo "anaconda --token ${TOKEN} upload --user ${ANACONDA_ORG} --force ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl"
           anaconda --token ${TOKEN} upload --user ${ANACONDA_ORG} --force ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
-          echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simpl
+          echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
         fi
