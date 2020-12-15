@@ -97,7 +97,6 @@ jobs:
         echo "DOCKER_TEST_IMAGE: ${DOCKER_TEST_IMAGE}"
         echo "BUILD_DEPENDS: ${BUILD_DEPENDS}"
         echo "TEST_DEPENDS: ${TEST_DEPENDS}"
-        echo "TOKEN length: ${#TOKEN}"
     - name: Install VirtualEnv
       run: |
         python -m pip install --upgrade pip
