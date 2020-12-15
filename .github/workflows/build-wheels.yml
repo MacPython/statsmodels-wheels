@@ -58,11 +58,25 @@ jobs:
         echo "PANDAS_DEP=$(echo pandas==1.1.5)" >> $GITHUB_ENV;
     - name: Setup Environment variables
       run: |
-        if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "ANACONDA_ORG=scipy-wheels-nightly" >> $GITHUB_ENV; else echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV; fi
-        if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV; else echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $$GITHUB_ENV; fi
-        if [ "schedule" == "${{ github.event_name }}" ]; then echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV; else echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV; fi
-        if [ "schedule" == "${{ github.event_name }}" ]; then echo "BUILD_COMMIT=master" >> $GITHUB_ENV; else echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV; fi
-        if [ "macos-latest" == "${{ matrix.os }}" ]; then echo "TRAVIS_OS_NAME=osx" >> $GITHUB_ENV; else echo "TRAVIS_OS_NAME=${{ matrix.os }}" >> $GITHUB_ENV; fi
+        if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then
+          echo "ANACONDA_ORG=scipy-wheels-nightly" >> $GITHUB_ENV
+          echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV
+        else
+          echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV
+          echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV
+        fi
+        if [ "schedule" == "${{ github.event_name }}" ]; then
+          echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV;
+          echo "BUILD_COMMIT=master" >> $GITHUB_ENV
+        else
+          echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV
+          echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV
+        fi
+        if [ "macos-latest" == "${{ matrix.os }}" ]; then
+          echo "TRAVIS_OS_NAME=osx" >> $GITHUB_ENV
+        else
+          echo "TRAVIS_OS_NAME=${{ matrix.os }}" >> $GITHUB_ENV;
+        fi
         echo "BUILD_DEPENDS=$(echo $NP_BUILD_DEP $SP_BUILD_DEP Cython)" >> $GITHUB_ENV;
         echo "TEST_DEPENDS=$(echo $NP_TEST_DEP $SP_TEST_DEP $PANDAS_DEP nose pytest pytest-xdist!=1.30.0 pytest-randomly)" >> $GITHUB_ENV;
         echo "DOCKER_TEST_IMAGE=$(echo multibuild/xenial_${{ matrix.PLAT}})" >> $GITHUB_ENV;
@@ -83,6 +97,7 @@ jobs:
         echo "DOCKER_TEST_IMAGE: ${DOCKER_TEST_IMAGE}"
         echo "BUILD_DEPENDS: ${BUILD_DEPENDS}"
         echo "TEST_DEPENDS: ${TEST_DEPENDS}"
+        echo "TOKEN length: ${#TOKEN}"
     - name: Install VirtualEnv
       run: |
         python -m pip install --upgrade pip
