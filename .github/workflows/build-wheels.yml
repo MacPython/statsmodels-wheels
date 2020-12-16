@@ -60,6 +60,7 @@ jobs:
         echo "PANDAS_DEP=$(echo pandas==1.1.5)" >> $GITHUB_ENV;
     - name: Setup Environment variables
       run: |
+        echo "Event type: ${{ github.event_name }}"
         if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then
           echo "ANACONDA_ORG=scipy-wheels-nightly" >> $GITHUB_ENV
           echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV
