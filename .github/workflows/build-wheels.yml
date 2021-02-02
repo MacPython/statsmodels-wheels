@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.6, 3.7, 3.8, 3.9]
         os: [ubuntu-latest, macos-latest]
         platform: [x64]
         PLAT: [i686, x86_64]
@@ -25,7 +25,7 @@ jobs:
     env:
       REPO_DIR: statsmodels
       PKG_NAME: statsmodels
-      BUILD_COMMIT: v0.12.1
+      BUILD_COMMIT: master # v0.12.1
       UNICODE_WIDTH: 32
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}
@@ -51,8 +51,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Pin Numpy, Scipy and Pandas version
       run: |
-        echo "NP_BUILD_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
-        echo "NP_TEST_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+        echo "NP_BUILD_DEP=$(echo numpy==1.19.5)" >> $GITHUB_ENV;
+        echo "NP_TEST_DEP=$(echo numpy==1.19.5)" >> $GITHUB_ENV;
         echo "SP_BUILD_DEP=$(echo scipy==1.5.4)" >> $GITHUB_ENV;
         echo "SP_TEST_DEP=$(echo scipy==1.5.4)" >> $GITHUB_ENV;
         echo "PANDAS_DEP=$(echo pandas==1.1.5)" >> $GITHUB_ENV;
