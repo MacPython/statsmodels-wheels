@@ -25,7 +25,7 @@ jobs:
     env:
       REPO_DIR: statsmodels
       PKG_NAME: statsmodels
-      BUILD_COMMIT: master # v0.12.1
+      BUILD_COMMIT: v0.12.2
       UNICODE_WIDTH: 32
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}

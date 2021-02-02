@@ -2,7 +2,7 @@ image: Visual Studio 2019
 
 environment:
   global:
-    BUILD_COMMIT: "maintenance/0.12.x" # "v0.12.1"
+    BUILD_COMMIT: "v0.12.2"
     REPO_DIR: statsmodels
     PKG_NAME: statsmodels
     NP_BUILD_DEP: "numpy==1.17.5"
@@ -18,8 +18,8 @@ environment:
 
   matrix:
     - PYTHON: C:\Python39-x64
-      NP_BUILD_DEP: "numpy==1.19.4"
-      NP_TEST_DEP: "numpy==1.19.4"
+      NP_BUILD_DEP: "numpy==1.19.5"
+      NP_TEST_DEP: "numpy==1.19.5"
       SP_BUILD_DEP: "scipy==1.5.4"
       SP_TEST_DEP: "scipy==1.5.4"
     - PYTHON: C:\Python38-x64
@@ -28,8 +28,8 @@ environment:
     - PYTHON: C:\Python37-x64
     - PYTHON: C:\Python36-x64
     - PYTHON: C:\Python39
-      NP_BUILD_DEP: "numpy==1.19.4"
-      NP_TEST_DEP: "numpy==1.19.4"
+      NP_BUILD_DEP: "numpy==1.19.5"
+      NP_TEST_DEP: "numpy==1.19.5"
       SP_BUILD_DEP: "scipy==1.5.4"
       SP_TEST_DEP: "scipy==1.5.4"
     - PYTHON: C:\Python38
