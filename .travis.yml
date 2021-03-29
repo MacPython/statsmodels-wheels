@@ -12,7 +12,7 @@ env:
       - MB_ML_VER=2014
       - ANACONDA_USERNAME=statsmodels
       # Following generated with
-      - DAILY_COMMIT=master
+      - DAILY_COMMIT=main
       - PYTHONHASHSEED=0
       - PIP_CMD=pip3
 
