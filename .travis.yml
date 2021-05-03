@@ -4,8 +4,8 @@ env:
       - BUILD_COMMIT=main
       - PLAT=aarch64
       - UNICODE_WIDTH=32
-      - NP_BUILD_DEP="numpy==1.19.3"
-      - NP_TEST_DEP="numpy==1.19.3"
+      - NP_BUILD_DEP="numpy==1.20.2"
+      - NP_TEST_DEP="numpy==1.20.2"
       - SP_BUILD_DEP="scipy==1.5.4"
       - SP_TEST_DEP="scipy==1.5.4"
       - PANDAS_DEP="pandas==1.1.3"
