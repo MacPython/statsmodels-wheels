@@ -17,6 +17,11 @@ function run_tests {
     python --version
     # Check OpenBLAS core
     export OPENBLAS_VERBOSE=2
+    # Only install on aarch64
+    arch=`uname -m`
+    if [[ "$arch" == "aarch64" ]]; then
+        apt install libc6-lse
+    fi
     python -c 'import statsmodels.api as sm; sm.show_versions();'
-    python -c 'import statsmodels; statsmodels.test(extra_args=["--skip-slow", "--skip-examples", "-n 2"], exit=True)'
+    python -c 'import statsmodels; statsmodels.test(extra_args=["--skip-slow", "--skip-examples"], exit=True)'
 }

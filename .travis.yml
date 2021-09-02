@@ -1,8 +1,7 @@
 env:
   global:
       - REPO_DIR=statsmodels
-      - BUILD_COMMIT=master
-      - PLAT=x86_64
+      - BUILD_COMMIT=main
       - UNICODE_WIDTH=32
       - NP_BUILD_DEP="numpy==1.18.5"
       - NP_TEST_DEP="numpy==1.18.5"
@@ -11,7 +10,7 @@ env:
       - PANDAS_DEP="pandas==1.0.5"
       - ANACONDA_USERNAME=statsmodels
       # Following generated with
-      - DAILY_COMMIT=master
+      - DAILY_COMMIT=main
       - PYTHONHASHSEED=0
 
 language: python
@@ -21,52 +20,54 @@ dist: trusty
 services: docker
 
 matrix:
-  include:
     - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.6
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.6
-        - PLAT=i686
-    - os: linux
+      arch: arm64-graviton2
+      dist: focal
+      virt: vm
+      group: edge
+      python: 3.7
       env:
         - MB_PYTHON_VERSION=3.7
-        - PANDAS_DEP=pandas
+        - MB_ML_VER=2014
+        - PLAT=aarch64
+        - DOCKER_TEST_IMAGE=multibuild/focal_arm64v8
+        - NP_BUILD_DEP="numpy==1.19.2"
+        - NP_TEST_DEP="numpy==1.19.2"
+        - SP_BUILD_DEP="scipy==1.5.3"
+        - SP_TEST_DEP="scipy==1.5.3"
+        - PANDAS_DEP="pandas==1.1.3"
     - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.7
-        - PLAT=i686
-        - PANDAS_DEP=pandas
-    - os: linux
+      arch: arm64-graviton2
+      dist: focal
+      virt: vm
+      group: edge
+      python: 3.8
       env:
         - MB_PYTHON_VERSION=3.8
-        - NP_BUILD_DEP=numpy==1.17.5
-        - NP_TEST_DEP=numpy==1.17.5
-        - PANDAS_DEP=pandas
+        - MB_ML_VER=2014
+        - PLAT=aarch64
+        - DOCKER_TEST_IMAGE=multibuild/focal_arm64v8
+        - NP_BUILD_DEP="numpy==1.19.2"
+        - NP_TEST_DEP="numpy==1.19.2"
+        - SP_BUILD_DEP="scipy==1.5.3"
+        - SP_TEST_DEP="scipy==1.5.3"
+        - PANDAS_DEP="pandas==1.1.3"
     - os: linux
+      arch: arm64-graviton2
+      dist: focal
+      virt: vm
+      group: edge
+      python: 3.9
       env:
-        - MB_PYTHON_VERSION=3.8
-        - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.17.5
-        - NP_TEST_DEP=numpy==1.17.5
-        - PANDAS_DEP=pandas
-    - os: osx
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.6
-    - os: osx
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.7
-        - PANDAS_DEP=pandas
-    - os: osx
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.8
-        - NP_BUILD_DEP=numpy==1.17.5
-        - NP_TEST_DEP=numpy==1.17.5
-        - PANDAS_DEP=pandas
+        - MB_PYTHON_VERSION=3.9
+        - MB_ML_VER=2014
+        - PLAT=aarch64
+        - DOCKER_TEST_IMAGE=multibuild/focal_arm64v8
+        - NP_BUILD_DEP="numpy==1.19.3"
+        - NP_TEST_DEP="numpy==1.19.3"
+        - SP_BUILD_DEP="scipy==1.5.4"
+        - SP_TEST_DEP="scipy==1.5.4"
+        - PANDAS_DEP="pandas==1.2.2"
 
 before_install:
     - if [ "$TRAVIS_BRANCH" == "master" ]; then
