@@ -18,18 +18,18 @@ The driving Github repository is
 
 The repository contains the branches:
 
-- `master` - for development and daily builds;
+- `main` - for development and daily builds;
 - `rel-x.y.z` - for building releases.
 
-GitHub actions and Appveyor builds the `master` regularly (daily/weekly), via
+GitHub actions and Appveyor builds the `main` regularly (daily/weekly), via
 cron jobs and Appveyor scheduled builds <https://www.appveyor.com/docs/build-configuration/\#scheduled-builds\>.
 
-Builds from the `master` branch uploaded [Anaconda.org](https://anaconda.org/scipy-wheels-nightly/statsmodels).
+Builds from the `main` branch uploaded [Anaconda.org](https://anaconda.org/scipy-wheels-nightly/statsmodels).
 
 Builds from the release branches upload to an
 [Anaconda.org staging repository](https://anaconda.org/multibuild-wheels-staging/statsmodels).
 
-Pull requests should usually be submitted to the `master` branch.
+Pull requests should usually be submitted to the `main` branch.
 
 ## How it works
 

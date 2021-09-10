@@ -19,7 +19,7 @@ python3 ./anaconda.org/rename-wheels.py -d ${TRAVIS_BUILD_DIR}/wheelhouse/
 
 ls ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
 
-if [ "$TRAVIS_BRANCH" == "master" ]; then
+if [ "$TRAVIS_BRANCH" == "main" ]; then
     ANACONDA_TOKEN=${STATSMODELS_SCIPY_WHEELS_NIGHTLY_TOKEN};
     ANACONDA_ORG="scipy-wheels-nightly"
 else
