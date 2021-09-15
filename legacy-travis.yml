@@ -1,7 +1,7 @@
 env:
   global:
       - REPO_DIR=statsmodels
-      - BUILD_COMMIT=master
+      - BUILD_COMMIT=main
       - PLAT=x86_64
       - UNICODE_WIDTH=32
       - NP_BUILD_DEP="numpy==1.18.5"
@@ -11,7 +11,7 @@ env:
       - PANDAS_DEP="pandas==1.0.5"
       - ANACONDA_USERNAME=statsmodels
       # Following generated with
-      - DAILY_COMMIT=master
+      - DAILY_COMMIT=main
       - PYTHONHASHSEED=0
 
 language: python
@@ -69,7 +69,7 @@ matrix:
         - PANDAS_DEP=pandas
 
 before_install:
-    - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    - if [ "$TRAVIS_BRANCH" == "main" ]; then
           CONTAINER="pre-release";
           BUILD_COMMIT=${DAILY_COMMIT:-$BUILD_COMMIT};
       else

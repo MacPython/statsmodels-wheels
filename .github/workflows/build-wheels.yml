@@ -2,9 +2,9 @@ name: Build wheels
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   schedule:
     - cron: '0 0 * * 0,3' # 2/weekly
 
@@ -27,7 +27,7 @@ jobs:
     env:
       REPO_DIR: statsmodels
       PKG_NAME: statsmodels
-      BUILD_COMMIT: master
+      BUILD_COMMIT: main
       UNICODE_WIDTH: 32
       MB_PYTHON_VERSION: ${{ matrix.python-version }}
       TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}
@@ -61,7 +61,7 @@ jobs:
     - name: Setup Environment variables
       run: |
         echo "Event type: ${{ github.event_name }}"
-        if [ "schedule" == "${{ github.event_name }}" ] || [ "master" == "$BUILD_COMMIT" ]; then
+        if [ "schedule" == "${{ github.event_name }}" ] || [ "main" == "$BUILD_COMMIT" ]; then
           echo "ANACONDA_ORG=scipy-wheels-nightly" >> $GITHUB_ENV
           echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV
         else
@@ -70,7 +70,7 @@ jobs:
         fi
         if [ "schedule" == "${{ github.event_name }}" ]; then
           echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV;
-          echo "BUILD_COMMIT=master" >> $GITHUB_ENV
+          echo "BUILD_COMMIT=main" >> $GITHUB_ENV
         else
           echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV
           echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV
@@ -121,7 +121,7 @@ jobs:
       run: |
         # trigger an upload to the shared ecosystem
         # infrastructure at: https://anaconda.org/scipy-wheels-nightly
-        # for cron jobs only (restricted to master branch once
+        # for cron jobs only (restricted to main branch once
         # per week)
         # SCIPY_WHEELS_NIGHTLY_ACCESS is a secret token
         # used in Travis CI config, originally
