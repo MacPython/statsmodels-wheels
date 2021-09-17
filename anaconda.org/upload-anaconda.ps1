@@ -6,7 +6,7 @@ python -m pip install git+https://github.com/Anaconda-Server/anaconda-client.git
 echo "Renaming wheels"
 python $env:APPVEYOR_BUILD_FOLDER\anaconda.org\rename-wheels.py -d $env:REPO_DIR/dist/
 
-if ($env:BUILD_COMMIT -eq "master"){
+if ($env:BUILD_COMMIT -eq "main"){
     $env:ANACONDA_TOKEN = $env:STATSMODELS_SCIPY_WHEELS_NIGHTLY_TOKEN
     $env:ANACONDA_ORG="scipy-wheels-nightly"
 }
