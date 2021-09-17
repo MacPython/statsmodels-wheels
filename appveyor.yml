@@ -2,7 +2,7 @@ image: Visual Studio 2019
 
 environment:
   global:
-    BUILD_COMMIT: "main"
+    BUILD_COMMIT: "v0.13.0rc0"
     REPO_DIR: statsmodels
     PKG_NAME: statsmodels
     NP_BUILD_DEP: "numpy==1.17.5"
