@@ -1,6 +1,10 @@
 image: Visual Studio 2019
 
 environment:
+  STATSMODELS_STAGING_TOKEN:
+    secure: CUHepxpinrKmN6RU/I41q8xFaFYmCCFf/hdl3wlpcW8Dk6yS2EFb2WJqCSDbKvt8
+
+environment:
   global:
     BUILD_COMMIT: "v0.13.0"
     REPO_DIR: statsmodels
