@@ -2,7 +2,7 @@ image: Visual Studio 2019
 
 environment:
   global:
-    BUILD_COMMIT: "v0.13.0"
+    BUILD_COMMIT: "maintenance/0.13.x"
     REPO_DIR: statsmodels
     PKG_NAME: statsmodels
     NP_BUILD_DEP: "numpy==1.17.5"
@@ -17,6 +17,11 @@ environment:
     ANACONDA_USERNAME: "statsmodels"
 
   matrix:
+    - PYTHON: C:\Python310-x64
+      NP_BUILD_DEP: "numpy==1.21.4"
+      NP_TEST_DEP: "numpy==1.21.4"
+      SP_BUILD_DEP: "scipy==1.7.2"
+      SP_TEST_DEP: "scipy==1.7.2"
     - PYTHON: C:\Python39-x64
       NP_BUILD_DEP: "numpy==1.19.4"
       NP_TEST_DEP: "numpy==1.19.4"

@@ -9,7 +9,7 @@ function pre_build {
 
 function build_wheel {
     # Prevent spurious numpy upgrade by using bdist_wheel
-    build_bdist_wheel $@
+    wrap_wheel_builder build_pip_wheel $@
 }
 
 function run_tests {
