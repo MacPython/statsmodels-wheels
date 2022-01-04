@@ -56,37 +56,57 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Pin Numpy, Scipy and Pandas version
       run: |
-        echo "NP_BUILD_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
-        echo "NP_TEST_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
-        echo "SP_BUILD_DEP=$(echo scipy==1.5.4)" >> $GITHUB_ENV;
-        echo "SP_TEST_DEP=$(echo scipy==1.5.4)" >> $GITHUB_ENV;
-        echo "PANDAS_DEP=$(echo pandas==1.1.5)" >> $GITHUB_ENV;
-        if [[ ${{ matrix.python-version }} == "3.10" ]]; then
-          echo "NP_BUILD_DEP=$(echo numpy==1.21.4)" >> $GITHUB_ENV;
-          echo "NP_TEST_DEP=$(echo numpy==1.21.4)" >> $GITHUB_ENV;
+        if [ "$MB_PYTHON_VERSION" == '3.7' ]; then
+          echo "NP_BUILD_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+          echo "NP_TEST_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+          echo "SP_BUILD_DEP=$(echo scipy==1.5.4)" >> $GITHUB_ENV;
+          echo "SP_TEST_DEP=$(echo scipy==1.5.4)" >> $GITHUB_ENV;
+          echo "PANDAS_DEP=$(echo pandas==1.1.5)" >> $GITHUB_ENV;
+        elif [ "$MB_PYTHON_VERSION" == '3.8' ]; then
+          echo "NP_BUILD_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+          echo "NP_TEST_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+          echo "SP_BUILD_DEP=$(echo scipy==1.5.4)" >> $GITHUB_ENV;
+          echo "SP_TEST_DEP=$(echo scipy==1.5.4)" >> $GITHUB_ENV;
+          echo "PANDAS_DEP=$(echo pandas==1.1.5)" >> $GITHUB_ENV;
+        elif [ "$MB_PYTHON_VERSION" == '3.9' ]; then
+          echo "NP_BUILD_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+          echo "NP_TEST_DEP=$(echo numpy==1.19.4)" >> $GITHUB_ENV;
+          echo "SP_BUILD_DEP=$(echo scipy==1.5.4)" >> $GITHUB_ENV;
+          echo "SP_TEST_DEP=$(echo scipy==1.5.4)" >> $GITHUB_ENV;
+          echo "PANDAS_DEP=$(echo pandas==1.1.5)" >> $GITHUB_ENV;
+        elif [ "$MB_PYTHON_VERSION" == '3.10' ]; then
+          echo "NP_BUILD_DEP=$(echo numpy==1.21.2)" >> $GITHUB_ENV;
+          echo "NP_TEST_DEP=$(echo numpy==1.21.2)" >> $GITHUB_ENV;
           echo "SP_BUILD_DEP=$(echo scipy==1.7.2)" >> $GITHUB_ENV;
           echo "SP_TEST_DEP=$(echo scipy==1.7.2)" >> $GITHUB_ENV;
           echo "PANDAS_DEP=$(echo pandas==1.3.4)" >> $GITHUB_ENV;
+        else
+          echo "None of the defined python version, use default"
         fi
     - name: Setup Environment variables
       run: |
         echo "Event type: ${{ github.event_name }}"
         if [ "schedule" == "${{ github.event_name }}" ] || [ "main" == "$BUILD_COMMIT" ]; then
-          echo "ANACONDA_ORG=scipy-wheels-nightly" >> $GITHUB_ENV
-          echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV
+          echo "ANACONDA_ORG=scipy-wheels-nightly" >> $GITHUB_ENV;
+          echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV;
         else
-          echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV
-          echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV
+          echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV;
+          echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV;
         fi
         if [ "schedule" == "${{ github.event_name }}" ]; then
           echo "TRAVIS_EVENT_TYPE=cron" >> $GITHUB_ENV;
-          echo "BUILD_COMMIT=main" >> $GITHUB_ENV
+          echo "BUILD_COMMIT=main" >> $GITHUB_ENV;
         else
-          echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV
-          echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV
+          echo "TRAVIS_EVENT_TYPE=${{ github.event_name }}" >> $GITHUB_ENV;
+          echo "BUILD_COMMIT=$BUILD_COMMIT" >> $GITHUB_ENV;
+        fi
+        if [ "x32" == "${{ matrix.platform }}" ]; then
+          echo "PLAT=i686" >> $GITHUB_ENV;
+        else
+          echo "PLAT=x86_64" >> $GITHUB_ENV;
         fi
         if [ "macos-latest" == "${{ matrix.os }}" ]; then
-          echo "TRAVIS_OS_NAME=osx" >> $GITHUB_ENV
+          echo "TRAVIS_OS_NAME=osx" >> $GITHUB_ENV;
         else
           echo "TRAVIS_OS_NAME=${{ matrix.os }}" >> $GITHUB_ENV;
         fi
@@ -122,14 +142,14 @@ jobs:
       run: |
         source multibuild/common_utils.sh
         source multibuild/travis_steps.sh
-        echo "------ BEFORE INSTALL ---------"
+        echo "------- BEFORE INSTALL --------"
         before_install
-        echo "------ CLEAN CODE --------"
+        echo "------- CLEAN CODE --------"
         clean_code $REPO_DIR $BUILD_COMMIT
-        echo "------ BUILD WHEEL --------"
-        build_wheel $REPO_DIR ${{ matrix.PLAT }}
-        echo "------ INSTALL RUN --------"
-        install_run ${{ matrix.PLAT }}
+        echo "------- BUILD WHEEL --------"
+        build_wheel $REPO_DIR $PLAT
+        echo "------- INSTALL_RUN --------"
+        install_run $PLAT
     - name: Upload wheels
       if: always()
       run: |
