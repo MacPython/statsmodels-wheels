@@ -13,14 +13,20 @@ jobs:
     name: Build wheels on ${{ matrix.os }}, Python ${{ matrix.python }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         python: ["cp37", "cp38", "cp39", "cp310"]
         os: [ubuntu-20.04, windows-2019, macOS-10.15]
     env:
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_SKIP: "pp* *-win32 *-manylinux_i686 *-musllinux_i686 *-musllinux_x86_64"
-      CIBW_TEST_REQUIRES: pytest pytest-xdist
-      CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow','-n','2'])"
+      # CIBW_TEST_REQUIRES: pytest pytest-xdist
+      # CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow','-n','2'])"
+      SCIPY_WHEELS_NIGHTLY_ACCESS: ${{ secrets.SCIPY_WHEELS_NIGHTLY_ACCESS }}
+      MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
+      MKL_NUM_THREADS: 1
+      OMP_NUM_THREADS: 1
+      OPENLAS_NUM_THREADS: 1
 
     steps:
       - uses: actions/checkout@v2
@@ -41,7 +47,41 @@ jobs:
           echo "CIBW_BUILD: ${CIBW_BUILD}"
           python -m cibuildwheel --output-dir ../wheelhouse statsmodels
 
-      - uses: actions/upload-artifact@v2
-        with:
-          path: ./wheelhouse/*.whl
-
+      - name: Setup Upload Variables
+        if: always()
+        shell: bash
+        run: |
+          if [ "schedule" == "${{ github.event_name }}" ] || [ "push" == "${{ github.event_name }}" ]; then
+            echo "ANACONDA_UPLOAD=true" >> $GITHUB_ENV
+          else
+            echo "ANACONDA_UPLOAD=false" >> $GITHUB_ENV
+          fi
+          if [ "schedule" == "${{ github.event_name }}" ] || [ "main" == "$BUILD_COMMIT" ]; then
+            echo "ANACONDA_ORG=scipy-wheels-nightly" >> $GITHUB_ENV
+            echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV
+          else
+            echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV
+            echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV
+          fi
+      - name: Upload wheels
+        if: always()
+        shell: bash
+        run: |
+          # trigger an upload to the shared ecosystem
+          # infrastructure at: https://anaconda.org/scipy-wheels-nightly
+          # for cron jobs only (restricted to main branch once
+          # per week)
+          # SCIPY_WHEELS_NIGHTLY_ACCESS is a secret token
+          # used in Travis CI config, originally
+          #
+          # for merges (push events) we use the staging area instead;
+          # MULTIBUILD_WHEELS_STAGING_ACCESS is a secret token used in Travis
+          # CI config, originally generated at anaconda.org for
+          # multibuild-wheels-staging
+          # generated at anaconda.org for scipy-wheels-nightly
+          if [ ${ANACONDA_UPLOAD} == true ]; then
+            python -m pip install git+https://github.com/Anaconda-Server/anaconda-client
+            ls ./wheelhouse/*.whl
+            anaconda -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ./wheelhouse/*.whl
+            echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
+          fi
