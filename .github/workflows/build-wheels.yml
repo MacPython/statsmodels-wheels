@@ -45,10 +45,10 @@ jobs:
       - name: Build wheels
         run: |
           echo "CIBW_BUILD: ${CIBW_BUILD}"
-          python -m cibuildwheel --output-dir ../wheelhouse statsmodels
+          python -m cibuildwheel --output-dir wheelhouse statsmodels
 
       - name: Setup Upload Variables
-        if: always()
+        if: ${{ always() }}
         shell: bash
         run: |
           if [ "schedule" == "${{ github.event_name }}" ] || [ "push" == "${{ github.event_name }}" ]; then
@@ -64,7 +64,7 @@ jobs:
             echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV
           fi
       - name: Upload wheels
-        if: always()
+        if: ${{ always() }}
         shell: bash
         run: |
           # trigger an upload to the shared ecosystem
@@ -79,6 +79,7 @@ jobs:
           # CI config, originally generated at anaconda.org for
           # multibuild-wheels-staging
           # generated at anaconda.org for scipy-wheels-nightly
+          echo ${PWD}
           if [ ${ANACONDA_UPLOAD} == true ]; then
             python -m pip install git+https://github.com/Anaconda-Server/anaconda-client
             ls ./wheelhouse/*.whl
