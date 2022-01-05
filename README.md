@@ -41,15 +41,12 @@ You will likely want to edit `build_wheels.yml` to specify the `BUILD_COMMIT`
 before triggering a build - see below.
 
 You will need write permission to the Github repository to trigger new
-builds on the Travis-CI interface. Contact us on the mailing list if you
-need this.
+builds. Contact us on the mailing list if you need this.
 
 You can trigger a build by:
 
 - making a commit to the `statsmodels-wheels` repository (e.g. with
-  `git commit --allow-empty`); or
-- clicking on the circular arrow icon towards the top right of the
-  Travis-CI page, to rerun the previous build.
+  `git commit --allow-empty`)
 
 In general, it is better to trigger a build with a commit, because this
 makes a new set of build products and logs, keeping the old ones for
@@ -59,9 +56,8 @@ problems and successful builds.
 ### Which statsmodels commit does the repository build?
 
 The `statsmodels-wheels` repository will build the commit specified in
-the `BUILD_COMMIT` at the top of the `build_wheels.yml` and `appveyor.yml`
-files. This can be any naming of a commit, including branch name, tag
-name or commit hash.
+the `BUILD_COMMIT` at the top of `build_wheels.yml`. This can be any naming
+of a commit, including branch name, tag name or commit hash.
 
 ## Uploading the built wheels to PyPI
 
