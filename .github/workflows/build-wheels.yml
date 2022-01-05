@@ -20,8 +20,8 @@ jobs:
     env:
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_SKIP: "pp* *-win32 *-manylinux_i686 *-musllinux_i686 *-musllinux_x86_64"
-      # CIBW_TEST_REQUIRES: pytest pytest-xdist
-      # CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow','-n','2'])"
+      CIBW_TEST_REQUIRES: pytest pytest-xdist
+      CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow','-n','2'])"
       SCIPY_WHEELS_NIGHTLY_ACCESS: ${{ secrets.SCIPY_WHEELS_NIGHTLY_ACCESS }}
       MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
       MKL_NUM_THREADS: 1
