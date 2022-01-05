@@ -5,8 +5,8 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  # schedule:
-  #   - cron: '0 0 * * 0,3' # 2/weekly
+  schedule:
+    - cron: '0 0 * * 0,3' # 2/weekly
 
 jobs:
   build_wheels:
@@ -14,10 +14,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # python: ["cp37", "cp38", "cp39", "cp310"]
-        python: ["cp39"]
-        # os: [ubuntu-20.04, windows-2019, macOS-10.15]
-        os: [macOS-10.15]
+        python: ["cp37", "cp38", "cp39", "cp310"]
+        os: [ubuntu-20.04, windows-2019, macOS-10.15]
     env:
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64"
