@@ -46,9 +46,11 @@ jobs:
           python-version: '3.x'
 
       - name: Install cibuildwheel
+        shell: bash
         run: python -m pip install cibuildwheel==2.3.1
 
       - name: Build wheels
+        shell: bash
         run: |
           python -m cibuildwheel --output-dir wheelhouse statsmodels
 
