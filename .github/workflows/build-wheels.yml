@@ -50,10 +50,6 @@ jobs:
 
       - name: Build wheels
         run: |
-          echo "CIBW_BUILD: ${CIBW_BUILD}"
-          cd statsmodels
-          git checkout ${BUILD_COMMIT}
-          cd ..
           python -m cibuildwheel --output-dir wheelhouse statsmodels
 
       - name: Setup Upload Variables
