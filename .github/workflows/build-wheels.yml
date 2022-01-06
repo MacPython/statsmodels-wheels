@@ -36,7 +36,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-          ref: ${{ env.BUILD_COMMIT }}
+          ref: "rel-0.13.0"
 
       # Used to host cibuildwheel
       - uses: actions/setup-python@v2
@@ -49,6 +49,9 @@ jobs:
       - name: Build wheels
         run: |
           echo "CIBW_BUILD: ${CIBW_BUILD}"
+          cd statsmodels
+          git checkout ${BUILD_COMMIT}
+          cd ..
           python -m cibuildwheel --output-dir wheelhouse statsmodels
 
       - name: Setup Upload Variables
