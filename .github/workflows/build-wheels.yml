@@ -25,7 +25,7 @@ jobs:
       CIBW_TEST_REQUIRES: pytest pytest-xdist
       CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow','-n','2'])"
       CIBW_REPAIR_WHEEL_COMMAND_LINUX: 'auditwheel repair --strip -w {dest_dir} {wheel}'
-      CIBW_BEFORE_BUILD: 'git submodule foreach git checkout ${BUILD_COMMIT}'
+      CIBW_BEFORE_BUILD: 'git submodule foreach git checkout ${{ env.BUILD_COMMIT }}'
       CIBW_BUILD_VERBOSITY: 2
       SCIPY_WHEELS_NIGHTLY_ACCESS: ${{ secrets.SCIPY_WHEELS_NIGHTLY_ACCESS }}
       MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
