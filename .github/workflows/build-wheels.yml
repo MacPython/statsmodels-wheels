@@ -10,8 +10,11 @@ on:
 
 jobs:
   build_wheels:
-    name: Build wheels on ${{ matrix.os }}, Python ${{ matrix.python }}
+    name: ${{ matrix.os }}, Python ${{ matrix.python }}
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
@@ -38,7 +41,6 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-          ref: ${{ env.BUILD_COMMIT }}
 
       # Used to host cibuildwheel
       - uses: actions/setup-python@v2
@@ -50,8 +52,9 @@ jobs:
 
       - name: Build wheels
         run: |
-          echo "CIBW_BUILD: ${CIBW_BUILD}"
           python -m cibuildwheel --output-dir wheelhouse statsmodels
+        env:
+          CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
 
       - name: Setup Upload Variables
         if: ${{ always() }}
