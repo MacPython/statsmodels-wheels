@@ -16,7 +16,7 @@ jobs:
         python: ["cp37", "cp38", "cp39", "cp310"]
         os: [ubuntu-20.04, windows-2019, macOS-10.15]
     env:
-      BUILD_COMMIT: "v0.13.1"  # or a specific version, e.g., v0.13.1
+      BUILD_COMMIT: "main"  # main or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64"
       CIBW_ARCHS_MACOS: "x86_64 arm64"
@@ -25,7 +25,6 @@ jobs:
       CIBW_TEST_REQUIRES: pytest pytest-xdist
       CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow','-n','2'])"
       CIBW_REPAIR_WHEEL_COMMAND_LINUX: 'auditwheel repair --strip -w {dest_dir} {wheel}'
-      CIBW_BEFORE_BUILD: 'git submodule foreach git checkout v0.13.1'
       CIBW_BUILD_VERBOSITY: 2
       SCIPY_WHEELS_NIGHTLY_ACCESS: ${{ secrets.SCIPY_WHEELS_NIGHTLY_ACCESS }}
       MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
@@ -52,6 +51,8 @@ jobs:
       - name: Build wheels
         run: |
           python -m cibuildwheel --output-dir wheelhouse statsmodels
+        env:
+          CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
 
       - name: Setup Upload Variables
         if: ${{ always() }}
