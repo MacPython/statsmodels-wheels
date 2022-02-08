@@ -62,7 +62,8 @@ jobs:
 
       - name: Build wheels
         run: |
-          python -m cibuildwheel --print-build-identifiers --output-dir wheelhouse statsmodels
+          python -m cibuildwheel --print-build-identifiers statsmodels
+          python -m cibuildwheel --output-dir wheelhouse statsmodels
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
 
