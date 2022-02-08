@@ -60,14 +60,9 @@ jobs:
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.3.1
 
-      - name: Show build identifiers
-        run:  |
-          python -m pip install pipx
-          pipx run cibuildwheel --platform linux --print-build-identifiers statsmodels
-
       - name: Build wheels
         run: |
-          python -m cibuildwheel --output-dir wheelhouse statsmodels
+          python -m cibuildwheel --print-build-identifiers --output-dir wheelhouse statsmodels
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
 
