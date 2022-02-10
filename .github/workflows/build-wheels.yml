@@ -61,17 +61,7 @@ jobs:
 
       - name: Build wheels
         run: |
-          # We refresh main, checkout and commit 
-          git submodule update --init --recursive
-          pushd statsmodels
-          git fetch --all
-          popd
-          git config --global user.name "statsmodels-wheel-builder"
-          git config --global user.email "statsmodels-wheel-builder@statsmodels.org"
-          echo git submodule foreach git checkout ${{ env.BUILD_COMMIT }}
           git submodule foreach git checkout ${{ env.BUILD_COMMIT }}
-          git add statsmodels
-          git commit -a --allow-empty -m "Dummy commit"
           python -m cibuildwheel --output-dir wheelhouse statsmodels
 
       - name: Setup Upload Variables
