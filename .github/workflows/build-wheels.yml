@@ -61,6 +61,11 @@ jobs:
 
       - name: Build wheels
         run: |
+          pushd statsmodels
+          git remote -v
+          git checkout main
+          git pull origin main
+          popd
           git submodule foreach git checkout ${{ env.BUILD_COMMIT }}
           python -m cibuildwheel --output-dir wheelhouse statsmodels
 
