@@ -99,6 +99,7 @@ jobs:
           echo ${PWD}
           if [ ${ANACONDA_UPLOAD} == true ]; then
             # main branches of these two packages
+            python -m pip install cython
             python -m pip install git+https://github.com/conda/conda-package-handling.git
             python -m pip install git+https://github.com/Anaconda-Server/anaconda-client
             ls ./wheelhouse/*.whl
