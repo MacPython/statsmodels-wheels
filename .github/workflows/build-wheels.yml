@@ -80,6 +80,13 @@ jobs:
             echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV
             echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV
           fi
+
+      - name: Setup miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-activate-base: true
+          activate-environment: ""
+
       - name: Upload wheels
         if: ${{ always() }}
         shell: bash
@@ -99,8 +106,8 @@ jobs:
           echo ${PWD}
           if [ ${ANACONDA_UPLOAD} == true ]; then
             # main branches of these two packages
-            python -m pip install cython
-            python -m pip install git+https://github.com/Anaconda-Server/anaconda-client.git@a661d01aa20db7c192afc7ebf55b6ff2b0646cad
+            conda list
+            conda install anaconda-client -y
             ls ./wheelhouse/*.whl
             anaconda -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ./wheelhouse/*.whl
             echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
