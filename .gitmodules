@@ -1,4 +1,4 @@
 [submodule "statsmodels"]
 	path = statsmodels
-	url = git://github.com/statsmodels/statsmodels.git
-	branch = v0.13.1
+	url = https://github.com/statsmodels/statsmodels.git
+	branch = main

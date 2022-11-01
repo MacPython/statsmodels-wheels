@@ -8,7 +8,7 @@ on:
 
 jobs:
   build_wheels:
-    name: "${{ matrix.python }} - ${{ matrix.os }}"
+    name: ${{ matrix.os }}, Python ${{ matrix.python }}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -23,8 +23,8 @@ jobs:
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64 aarch64"
       CIBW_ARCHS_MACOS: "x86_64 arm64"
-      # No support for pypy, musl, Win32 for 3.10+
-      CIBW_SKIP: "pp* *-musllinux_* cp310-win32"
+      # No support for pypy, musl, 32-bit windows
+      CIBW_SKIP: "pp* *-musllinux_* *-win32"
       CIBW_TEST_REQUIRES: pytest pytest-xdist
       CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow','-n','2'])"
       # Increase pip debugging output
@@ -39,25 +39,24 @@ jobs:
       OPENLAS_NUM_THREADS: 1
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
           fetch-depth: 0
-          ref: "rel-0.13.0"
 
       # Used to host cibuildwheel
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
       - name: Set up QEMU
         if: runner.os == 'Linux'
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
         with:
           platforms: all
 
       - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel==2.3.1
+        run: python -m pip install cibuildwheel==2.11.2
 
       - name: Build wheels
         run: |
@@ -103,7 +102,9 @@ jobs:
           # generated at anaconda.org for scipy-wheels-nightly
           echo ${PWD}
           if [ ${ANACONDA_UPLOAD} == true ]; then
-            python -m pip install git+https://github.com/Anaconda-Server/anaconda-client
+            # main branches of these two packages
+            python -m pip install cython
+            python -m pip install git+https://github.com/Anaconda-Server/anaconda-client.git@be1e14936a8e947da94d026c990715f0596d7043
             ls ./wheelhouse/*.whl
             anaconda -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ./wheelhouse/*.whl
             echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
