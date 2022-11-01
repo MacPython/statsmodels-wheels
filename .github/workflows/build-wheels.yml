@@ -23,8 +23,8 @@ jobs:
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64 aarch64"
       CIBW_ARCHS_MACOS: "x86_64 arm64"
-      # No support for pypy, musl, Win32 for 3.10+
-      CIBW_SKIP: "pp* *-musllinux_* cp310-win32 cp311-win32"
+      # No support for pypy, musl, 32-bit windows
+      CIBW_SKIP: "pp* *-musllinux_* *-win32"
       CIBW_TEST_REQUIRES: pytest pytest-xdist
       CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow','-n','2'])"
       # Increase pip debugging output
