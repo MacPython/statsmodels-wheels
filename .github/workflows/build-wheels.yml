@@ -101,6 +101,7 @@ jobs:
             # main branches of these two packages
             python -m pip install cython
             python -m pip install git+https://github.com/Anaconda-Server/anaconda-client.git@be1e14936a8e947da94d026c990715f0596d7043
+            python -m pip install "urllib3>=1.21.1,<2"
             ls ./wheelhouse/*.whl
             anaconda -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ./wheelhouse/*.whl
             echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
