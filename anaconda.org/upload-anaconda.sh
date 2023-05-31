@@ -21,7 +21,7 @@ ls ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl
 
 if [ "$TRAVIS_BRANCH" == "main" ]; then
     ANACONDA_TOKEN=${STATSMODELS_SCIPY_WHEELS_NIGHTLY_TOKEN};
-    ANACONDA_ORG="scipy-wheels-nightly"
+    ANACONDA_ORG="scientific-python-nightly-wheels"
 else
     ANACONDA_TOKEN=${STATSMODELS_MULTIBUILD_WHEELS_STAGING_TOKEN};
     ANACONDA_ORG="multibuild-wheels-staging"

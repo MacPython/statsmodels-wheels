@@ -74,7 +74,7 @@ jobs:
             echo "ANACONDA_UPLOAD=false" >> $GITHUB_ENV
           fi
           if [ "schedule" == "${{ github.event_name }}" ] || [ "main" == "$BUILD_COMMIT" ]; then
-            echo "ANACONDA_ORG=scipy-wheels-nightly" >> $GITHUB_ENV
+            echo "ANACONDA_ORG=scientific-python-nightly-wheels" >> $GITHUB_ENV
             echo "TOKEN=$SCIPY_WHEELS_NIGHTLY_ACCESS" >> $GITHUB_ENV
           else
             echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV
@@ -85,7 +85,7 @@ jobs:
         shell: bash
         run: |
           # trigger an upload to the shared ecosystem
-          # infrastructure at: https://anaconda.org/scipy-wheels-nightly
+          # infrastructure at: https://anaconda.org/scientific-python-nightly-wheels
           # for cron jobs only (restricted to main branch once
           # per week)
           # SCIPY_WHEELS_NIGHTLY_ACCESS is a secret token
@@ -95,7 +95,7 @@ jobs:
           # MULTIBUILD_WHEELS_STAGING_ACCESS is a secret token used in Travis
           # CI config, originally generated at anaconda.org for
           # multibuild-wheels-staging
-          # generated at anaconda.org for scipy-wheels-nightly
+          # generated at anaconda.org for scientific-python-nightly-wheels
           echo ${PWD}
           if [ ${ANACONDA_UPLOAD} == true ]; then
             # main branches of these two packages
