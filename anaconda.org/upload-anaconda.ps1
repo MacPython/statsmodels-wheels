@@ -8,7 +8,7 @@ python $env:APPVEYOR_BUILD_FOLDER\anaconda.org\rename-wheels.py -d $env:REPO_DIR
 
 if ($env:BUILD_COMMIT -eq "main"){
     $env:ANACONDA_TOKEN = $env:STATSMODELS_SCIPY_WHEELS_NIGHTLY_TOKEN
-    $env:ANACONDA_ORG="scipy-wheels-nightly"
+    $env:ANACONDA_ORG="scientific-python-nightly-wheels"
 }
 else {
     $env:ANACONDA_TOKEN = $env:STATSMODELS_MULTIBUILD_WHEELS_STAGING_TOKEN

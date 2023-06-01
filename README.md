@@ -20,7 +20,7 @@ The repository contains the branches:
 
 GitHub actions builds the `main` regularly (daily/weekly) via cron jobs.
 
-Builds from the `main` branch uploaded [Anaconda.org](https://anaconda.org/scipy-wheels-nightly/statsmodels).
+Builds from the `main` branch uploaded [Anaconda.org](https://anaconda.org/scientific-python-nightly-wheels/statsmodels).
 
 Builds from the release branches upload to an
 [Anaconda.org staging repository](https://anaconda.org/multibuild-wheels-staging/statsmodels).
@@ -62,7 +62,7 @@ of a commit, including branch name, tag name or commit hash.
 ## Uploading the built wheels to PyPI
 
 - pre-releases container visible at
-  <https://anaconda.org/scipy-wheels-nightly/statsmodels>
+  <https://anaconda.org/scientific-python-nightly-wheels/statsmodels>
 - release container visible at
   <https://anaconda.org/multibuild-wheels-staging/statsmodels>
 
