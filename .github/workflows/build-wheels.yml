@@ -27,7 +27,7 @@ jobs:
       CIBW_ARCHS_MACOS: "x86_64 arm64"
       # No support for pypy, musl, Win32 for 3.10+
       # Skip musl for 3.8 and 3.9 since no upstream wheels
-      CIBW_SKIP: "pp* *-win32 cp38-musllinux* cp39-musllinux*"
+      CIBW_SKIP: "pp* *-win32 cp38-musllinux* cp39-musllinux* *musllinux_aarch64*"
       CIBW_TEST_REQUIRES: pytest pytest-xdist
       CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow','-n','2'])"
       # Avoid testing on emulated architectures
