@@ -101,9 +101,9 @@ jobs:
           if [ ${ANACONDA_UPLOAD} == true ]; then
             # main branches of these two packages
             python --version
-            python -m pip install cython<3
+            python -m pip install "cython<3"
             python -m pip list
-            python -m pip install git+https://github.com/Anaconda-Server/anaconda-client.git
+            python -m pip install git+https://github.com/Anaconda-Server/anaconda-client.git -vv
             python -m pip install "urllib3>=1.21.1,<2"
             ls ./wheelhouse/*.whl
             anaconda -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ./wheelhouse/*.whl
