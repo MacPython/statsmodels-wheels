@@ -2,11 +2,9 @@ name: Build wheels
 
 on:
   push:
-    branches: [ main ]
+    branches: [ rel-0.14.0  ]
   pull_request:
-    branches: [ main ]
-  schedule:
-    - cron: '0 0 * * 0,3' # 2/weekly
+    branches: [ rel-0.14.0 ]
 
 jobs:
   build_wheels:
