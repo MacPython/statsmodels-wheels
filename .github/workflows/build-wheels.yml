@@ -19,7 +19,7 @@ jobs:
         python: [cp38, cp39, cp310, cp311, cp312]
         os: [ubuntu-latest, windows-latest, macOS-latest]
     env:
-      BUILD_COMMIT: "maintenance/0.14.x"  # or a specific version, e.g., v0.13.1
+      BUILD_COMMIT: "v0.14.1"  # or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64 aarch64"
       CIBW_ARCHS_MACOS: "x86_64 arm64"
@@ -44,13 +44,13 @@ jobs:
           fetch-depth: 0
 
       # Used to host cibuildwheel
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
       - name: Set up QEMU
         if: runner.os == 'Linux'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
         with:
           platforms: all
 
