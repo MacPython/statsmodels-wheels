@@ -45,7 +45,7 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      # Used to host cibuildwheel
+      # Used to host cibuildwheel runner
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
