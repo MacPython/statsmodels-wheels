@@ -122,7 +122,7 @@ jobs:
       BUILD_COMMIT: "main"  # or a specific version, e.g., v0.13.1
       CIBW_PLATFORM: pyodide
       CIBW_TEST_REQUIRES: pytest
-      CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow')"
+      CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow'])"
       MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
       SCIENTIFIC_PYTHON_NIGHTLY_WHEELS: ${{ secrets.SCIENTIFIC_PYTHON_NIGHTLY_WHEELS }}
       MKL_NUM_THREADS: 1
