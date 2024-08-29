@@ -10,7 +10,7 @@ on:
 
 jobs:
   build_wheels:
-    name: ${{ matrix.os }}, Python ${{ matrix.python }}
+    name: ${{ matrix.os }}, ${{matrix.python_impl }} ${{ matrix.python }}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -20,6 +20,11 @@ jobs:
       matrix:
         python: [cp39, cp310, cp311, cp312]
         os: [ubuntu-latest, windows-latest, macOS-latest]
+        python_impl: [Python]
+        include:
+          - python: cp312
+            os: ubuntu-latest
+            python_impl: Pyodide
     env:
       BUILD_COMMIT: "main"  # or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
@@ -58,93 +63,24 @@ jobs:
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.20.0
+        if: matrix.python_impl != 'Pyodide'
         with:
           output-dir: wheelhouse
           package-dir: statsmodels
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
 
-      - name: Setup Upload Variables
-        if: ${{ always() }}
-        shell: bash
-        run: |
-          if [ "schedule" == "${{ github.event_name }}" ] || [ "push" == "${{ github.event_name }}" ]; then
-            echo "ANACONDA_UPLOAD=true" >> $GITHUB_ENV
-          else
-            echo "ANACONDA_UPLOAD=false" >> $GITHUB_ENV
-          fi
-          if [ "schedule" == "${{ github.event_name }}" ] || [ "main" == "$BUILD_COMMIT" ]; then
-            echo "ANACONDA_ORG=scientific-python-nightly-wheels" >> $GITHUB_ENV
-            echo "TOKEN=$SCIENTIFIC_PYTHON_NIGHTLY_WHEELS" >> $GITHUB_ENV
-          else
-            echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV
-            echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV
-          fi
-      - name: Upload wheels
-        if: ${{ always() }}
-        shell: bash
-        run: |
-          # trigger an upload to the shared ecosystem
-          # infrastructure at: https://anaconda.org/scientific-python-nightly-wheels
-          # for cron jobs only (restricted to main branch once
-          # per week)
-          # SCIENTIFIC_PYTHON_NIGHTLY_WHEELS is a secret token
-          # used in Travis CI config, originally
-          #
-          # for merges (push events) we use the staging area instead;
-          # MULTIBUILD_WHEELS_STAGING_ACCESS is a secret token used in Travis
-          # CI config, originally generated at anaconda.org for
-          # multibuild-wheels-staging
-          # generated at anaconda.org for scientific-python-nightly-wheels
-          echo ${PWD}
-          if [ ${ANACONDA_UPLOAD} == true ]; then
-            # main branches of these two packages
-            python --version
-            python -m pip install "cython<3"
-            python -m pip list
-            python -m pip install git+https://github.com/bashtage/clyent.git
-            python -m pip install git+https://github.com/Anaconda-Server/anaconda-client.git
-            python -m pip install "urllib3>=1.21.1,<2"
-            ls ./wheelhouse/*.whl
-            anaconda -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ./wheelhouse/*.whl
-            echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
-          fi
-
-
-  # Same as the above job, but configurations swapped for Pyodide
-  build_pyodide_wheel:
-    name: ubuntu-latest, Pyodide cp312
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    env:
-      BUILD_COMMIT: "main"  # or a specific version, e.g., v0.13.1
-      CIBW_PLATFORM: pyodide
-      CIBW_TEST_REQUIRES: pytest
-      CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow'])"
-      MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
-      SCIENTIFIC_PYTHON_NIGHTLY_WHEELS: ${{ secrets.SCIENTIFIC_PYTHON_NIGHTLY_WHEELS }}
-      MKL_NUM_THREADS: 1
-      OMP_NUM_THREADS: 1
-      OPENLAS_NUM_THREADS: 1
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          fetch-depth: 0
-
-      # Used to host cibuildwheel runner
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
       - name: Build Pyodide wheel
+        if: matrix.python_impl == 'Pyodide'
         uses: pypa/cibuildwheel@v2.20.0
         with:
           output-dir: wheelhouse
           package-dir: statsmodels
+        env:
+          CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
+          CIBW_PLATFORM: pyodide
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow'])"
 
       - name: Setup Upload Variables
         if: ${{ always() }}
