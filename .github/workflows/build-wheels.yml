@@ -35,8 +35,8 @@ jobs:
       CIBW_SKIP: "pp* *-win32 cp38-musllinux* cp39-musllinux* *musllinux_aarch64*"
       CIBW_TEST_REQUIRES: pytest pytest-xdist
       CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow','-n','2'])"
-      # Avoid testing on emulated architectures
-      CIBW_TEST_SKIP: "*-*linux_{aarch64,ppc64le,s390x}"
+      # Avoid testing on emulated architectures and Pyodide
+      CIBW_TEST_SKIP: "*-*linux_{aarch64,ppc64le,s390x} *pyodide*"
       CIBW_REPAIR_WHEEL_COMMAND_LINUX: 'auditwheel repair --strip -w {dest_dir} {wheel}'
       MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
       SCIENTIFIC_PYTHON_NIGHTLY_WHEELS: ${{ secrets.SCIENTIFIC_PYTHON_NIGHTLY_WHEELS }}
@@ -79,8 +79,9 @@ jobs:
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
           CIBW_PLATFORM: pyodide
-          CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow'])"
+          # Tests are slow, and statsmodels is tested out-of-tree on PRs in the main repository
+          # CIBW_TEST_REQUIRES: pytest
+          # CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow'])"
 
       - name: Setup Upload Variables
         if: ${{ always() }}
