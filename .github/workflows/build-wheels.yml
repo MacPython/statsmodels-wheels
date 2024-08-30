@@ -50,11 +50,6 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      # Used to host cibuildwheel runner
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
       - name: Set up QEMU
         if: runner.os == 'Linux'
         uses: docker/setup-qemu-action@v3
