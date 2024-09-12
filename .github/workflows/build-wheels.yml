@@ -64,7 +64,8 @@ jobs:
           package-dir: statsmodels
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
-          CIBW_BUILD_VERBOSITY: 2
+          CIBW_BUILD_VERBOSITY: 1
+          CIBW_ENVIRONMENT_MACOS: CGLAGS="-std=c99"
 
       - name: Build Pyodide wheel
         if: matrix.python_impl == 'Pyodide'
@@ -75,7 +76,7 @@ jobs:
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
           CIBW_PLATFORM: pyodide
-          CIBW_BUILD_VERBOSITY: 2
+          CIBW_BUILD_VERBOSITY: 1
 
       - name: Setup Upload Variables
         if: ${{ always() }}
