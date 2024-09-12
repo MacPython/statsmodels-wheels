@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         python: [cp39, cp310, cp311, cp312]
-        os: [ubuntu-latest, windows-latest, macos-13]
+        os: [ubuntu-latest, windows-latest, macos-13, macos-latest]
         python_impl: [Python]
         include:
           - python: cp312
@@ -29,7 +29,6 @@ jobs:
       BUILD_COMMIT: "main"  # or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64 aarch64"
-      CIBW_ARCHS_MACOS: "x86_64 arm64"
       # No support for pypy, musl, Win32 for 3.10+
       # Skip musl for 3.8 and 3.9 since no upstream wheels
       CIBW_SKIP: "pp* *-win32 cp38-musllinux* cp39-musllinux* *musllinux_aarch64*"
@@ -57,14 +56,25 @@ jobs:
         with:
           platforms: all
 
-      - name: Build wheels
+      - name: Build wheels (Default)
         uses: pypa/cibuildwheel@v2.20
-        if: matrix.python_impl != 'Pyodide'
+        if: (matrix.python_impl != 'Pyodide') && (matrix.os != 'macos-latest')
         with:
           output-dir: wheelhouse
           package-dir: statsmodels
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
+          CIBW_ARCHS_OSX: "x86_64"
+
+      - name: Build wheels (MacOS arm64)
+        if: matrix.os == 'macos-latest'
+        uses: pypa/cibuildwheel@v2.20
+        with:
+          output-dir: wheelhouse
+          package-dir: statsmodels
+        env:
+          CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
+          CIBW_ARCHS_OSX: "arm64"          
 
       - name: Build Pyodide wheel
         if: matrix.python_impl == 'Pyodide'
