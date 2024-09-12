@@ -74,6 +74,7 @@ jobs:
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
           CIBW_PLATFORM: pyodide
+          CIBW_BUILD_VERBOSITY: 2
           # Tests are slow, and statsmodels is tested out-of-tree on PRs in the main repository
           # CIBW_TEST_REQUIRES: pytest
           # CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow'])"
