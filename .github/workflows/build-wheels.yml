@@ -29,7 +29,8 @@ jobs:
       BUILD_COMMIT: "main"  # or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64 aarch64"
-      CIBW_ARCHS_MACOS: "x86_64 arm64"
+      CIBW_ARCHS_MACOS: "arm64"
+      # TOdo: reenable x86_64
       # No support for pypy, musl, Win32 for 3.10+
       # Skip musl for 3.8 and 3.9 since no upstream wheels
       CIBW_SKIP: "pp* *-win32 cp38-musllinux* cp39-musllinux* *musllinux_aarch64*"
