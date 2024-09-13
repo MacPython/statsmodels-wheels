@@ -27,9 +27,9 @@ jobs:
       BUILD_COMMIT: "v0.14.2"  # or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64 aarch64"
-      CIBW_ARCHS_MACOS: "arm64"
       # No support for pypy, musl, Win32 for 3.10+
       # Skip musl for 3.8 and 3.9 since no upstream wheels
+      CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
       CIBW_SKIP: "pp* *-win32 cp38-musllinux* cp39-musllinux* *musllinux_aarch64*"
       CIBW_TEST_REQUIRES: pytest pytest-xdist
       CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow','-n','2'], exit=True)"
@@ -62,7 +62,7 @@ jobs:
           output-dir: wheelhouse
           package-dir: statsmodels
         env:
-          CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
+          CIBW_ARCHS_MACOS: "arm64"
 
       - name: Build wheels (MacOS x86_64)
         if: matrix.os == 'macos-13'
@@ -71,7 +71,6 @@ jobs:
           output-dir: wheelhouse
           package-dir: statsmodels
         env:
-          CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
           CIBW_ARCHS_OSX: "x86_64"
 
       - name: Build Pyodide wheel
@@ -81,7 +80,6 @@ jobs:
           output-dir: wheelhouse
           package-dir: statsmodels
         env:
-          CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
           CIBW_PLATFORM: pyodide
 
       - name: Setup Upload Variables
