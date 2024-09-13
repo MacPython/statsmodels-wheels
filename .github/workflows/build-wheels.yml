@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         python: [cp39, cp310, cp311, cp312]
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest, windows-latest, macos-13, macos-latest]
         python_impl: [Python]
         include:
           - python: cp312
@@ -29,7 +29,6 @@ jobs:
       BUILD_COMMIT: "main"  # or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64 aarch64"
-      CIBW_ARCHS_MACOS: "x86_64 arm64"
       # No support for pypy, musl, Win32 for 3.10+
       # Skip musl for 3.8 and 3.9 since no upstream wheels
       CIBW_SKIP: "pp* *-win32 cp38-musllinux* cp39-musllinux* *musllinux_aarch64*"
@@ -38,6 +37,7 @@ jobs:
       # Avoid testing on emulated architectures and Pyodide
       CIBW_TEST_SKIP: "*-*linux_{aarch64,ppc64le,s390x} *pyodide*"
       CIBW_REPAIR_WHEEL_COMMAND_LINUX: 'auditwheel repair --strip -w {dest_dir} {wheel}'
+      CIBW_BUILD_VERBOSITY: 1
       MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
       SCIENTIFIC_PYTHON_NIGHTLY_WHEELS: ${{ secrets.SCIENTIFIC_PYTHON_NIGHTLY_WHEELS }}
       MKL_NUM_THREADS: 1
@@ -56,15 +56,25 @@ jobs:
         with:
           platforms: all
 
-      - name: Build wheels
+      - name: Build wheels (Default)
         uses: pypa/cibuildwheel@v2.20
-        if: matrix.python_impl != 'Pyodide'
+        if: (matrix.python_impl != 'Pyodide') && (matrix.os != 'macos-latest')
         with:
           output-dir: wheelhouse
           package-dir: statsmodels
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
-          CIBW_BUILD_VERBOSITY: 2
+          CIBW_ARCHS_OSX: "x86_64"
+
+      - name: Build wheels (MacOS arm64)
+        if: matrix.os == 'macos-latest'
+        uses: pypa/cibuildwheel@v2.20
+        with:
+          output-dir: wheelhouse
+          package-dir: statsmodels
+        env:
+          CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
+          CIBW_ARCHS_OSX: "arm64"          
 
       - name: Build Pyodide wheel
         if: matrix.python_impl == 'Pyodide'
@@ -75,7 +85,6 @@ jobs:
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
           CIBW_PLATFORM: pyodide
-          CIBW_BUILD_VERBOSITY: 2
 
       - name: Setup Upload Variables
         if: ${{ always() }}
