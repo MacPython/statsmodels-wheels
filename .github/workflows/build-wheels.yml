@@ -58,23 +58,23 @@ jobs:
 
       - name: Build wheels (Default)
         uses: pypa/cibuildwheel@v2.20
-        if: (matrix.python_impl != 'Pyodide') && (matrix.os != 'macos-latest')
+        if: (matrix.python_impl != 'Pyodide') && (matrix.os != 'macos-13')
         with:
           output-dir: wheelhouse
           package-dir: statsmodels
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
-          CIBW_ARCHS_OSX: "x86_64"
+          CIBW_ARCHS_MACOS: "arm64"
 
-      - name: Build wheels (MacOS arm64)
-        if: matrix.os == 'macos-latest'
+      - name: Build wheels (MacOS x86_64)
+        if: matrix.os == 'macos-13'
         uses: pypa/cibuildwheel@v2.20
         with:
           output-dir: wheelhouse
           package-dir: statsmodels
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
-          CIBW_ARCHS_OSX: "arm64"          
+          CIBW_ARCHS_OSX: "x86_64"
 
       - name: Build Pyodide wheel
         if: matrix.python_impl == 'Pyodide'
@@ -102,6 +102,12 @@ jobs:
             echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV
             echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV
           fi
+
+      # Used to ensure python is available for wheel upload
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
       - name: Upload wheels
         if: ${{ always() }}
         shell: bash
