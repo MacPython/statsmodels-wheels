@@ -57,7 +57,7 @@ jobs:
           platforms: all
 
       - name: Build wheels (Default)
-        uses: pypa/cibuildwheel@v2.20
+        uses: pypa/cibuildwheel@v2.21
         if: (matrix.python_impl != 'Pyodide') && (matrix.os != 'macos-13')
         with:
           output-dir: wheelhouse
@@ -68,7 +68,7 @@ jobs:
 
       - name: Build wheels (MacOS x86_64)
         if: matrix.os == 'macos-13'
-        uses: pypa/cibuildwheel@v2.20
+        uses: pypa/cibuildwheel@v2.21
         with:
           output-dir: wheelhouse
           package-dir: statsmodels
@@ -78,7 +78,7 @@ jobs:
 
       - name: Build Pyodide wheel
         if: matrix.python_impl == 'Pyodide'
-        uses: pypa/cibuildwheel@v2.20
+        uses: pypa/cibuildwheel@v2.21
         with:
           output-dir: wheelhouse
           package-dir: statsmodels
