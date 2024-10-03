@@ -24,7 +24,7 @@ jobs:
             os: ubuntu-latest
             python_impl: Pyodide
     env:
-      BUILD_COMMIT: "v0.14.3"  # or a specific version, e.g., v0.13.1
+      BUILD_COMMIT: "v0.14.4"  # or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64 aarch64"
       # No support for pypy, musl, Win32 for 3.10+
