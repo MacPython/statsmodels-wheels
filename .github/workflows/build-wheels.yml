@@ -128,7 +128,7 @@ jobs:
           if [ ${ANACONDA_UPLOAD} == true ]; then
             # main branches of these two packages
             python --version
-            python -m pip install "cython<3"
+            python -m pip install "cython<3" packaging
             python -m pip list
             python -m pip install git+https://github.com/bashtage/clyent.git
             python -m pip install git+https://github.com/Anaconda-Server/anaconda-client.git
