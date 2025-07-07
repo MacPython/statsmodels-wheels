@@ -24,7 +24,7 @@ jobs:
             os: ubuntu-latest
             python_impl: Pyodide
     env:
-      BUILD_COMMIT: "v0.14.4"  # or a specific version, e.g., v0.13.1
+      BUILD_COMMIT: "v0.14.5"  # or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64 aarch64"
       # No support for pypy, musl, Win32 for 3.10+
@@ -56,7 +56,7 @@ jobs:
           platforms: all
 
       - name: Build wheels (Default)
-        uses: pypa/cibuildwheel@v2.21
+        uses: pypa/cibuildwheel@v3.0
         if: (matrix.python_impl != 'Pyodide') && (matrix.os != 'macos-13')
         with:
           output-dir: wheelhouse
@@ -67,7 +67,7 @@ jobs:
 
       - name: Build wheels (MacOS x86_64)
         if: matrix.os == 'macos-13'
-        uses: pypa/cibuildwheel@v2.21
+        uses: pypa/cibuildwheel@v3.0
         with:
           output-dir: wheelhouse
           package-dir: statsmodels
@@ -77,7 +77,7 @@ jobs:
 
       - name: Build Pyodide wheel
         if: matrix.python_impl == 'Pyodide'
-        uses: pypa/cibuildwheel@v2.21
+        uses: pypa/cibuildwheel@v3.0
         with:
           output-dir: wheelhouse
           package-dir: statsmodels
@@ -127,7 +127,7 @@ jobs:
           if [ ${ANACONDA_UPLOAD} == true ]; then
             # main branches of these two packages
             python --version
-            python -m pip install "cython<3"
+            python -m pip install "cython<3" packaging
             python -m pip list
             python -m pip install git+https://github.com/bashtage/clyent.git
             python -m pip install git+https://github.com/Anaconda-Server/anaconda-client.git
