@@ -25,13 +25,16 @@ jobs:
           - python: cp312
             os: ubuntu-latest
             python_impl: Pyodide
+        exclude:
+          - os: windows-11-arm
+            python: cp310
     env:
       BUILD_COMMIT: "main"  # or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64 aarch64"
       # No support for pypy, musl, Win32 for 3.10+
       # Skip musl for 3.8 and 3.9 since no upstream wheels
-      CIBW_SKIP: "pp* *-win32 *musllinux_aarch64* *cp310-win_arm64*"
+      CIBW_SKIP: "pp* *-win32 *musllinux_aarch64*"
       CIBW_TEST_REQUIRES: pytest pytest-xdist
       CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['--skip-examples','--skip-slow','-n','2'], exit=True)"
       # Avoid testing on emulated architectures and Pyodide
