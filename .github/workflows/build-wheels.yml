@@ -56,6 +56,10 @@ jobs:
         with:
           platforms: all
 
+      - name: Setup LLVM for Windows ARM64
+        if: ${{ matrix.buildplat[1] == 'win_arm64' }}
+        uses: ./.github/windows_arm64_steps
+
       - name: Build wheels (Default)
         uses: pypa/cibuildwheel@v3.1
         if: (matrix.python_impl != 'Pyodide') && (matrix.os != 'macos-13')
