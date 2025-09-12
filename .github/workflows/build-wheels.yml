@@ -57,7 +57,7 @@ jobs:
           platforms: all
 
       - name: Setup LLVM for Windows ARM64
-        if: ${{ matrix.buildplat[1] == 'win_arm64' }}
+        if: ${{ matrix.os == 'windows-11-arm' }}
         uses: ./.github/windows_arm64_steps
 
       - name: Build wheels (Default)
