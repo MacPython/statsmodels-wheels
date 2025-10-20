@@ -10,7 +10,7 @@ on:
 
 jobs:
   build_wheels:
-    name: ${{ matrix.os }}, ${{matrix.python_impl }} ${{ matrix.python }}
+    name: ${{ matrix.os }}, Python ${{matrix.python_impl }} ${{ matrix.python }}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
