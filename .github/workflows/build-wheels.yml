@@ -18,16 +18,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest, macos-15-intel, windows-11-arm]
+        os: [ubuntu-latest, windows-latest, macos-latest, macos-15-intel]
         python: [cp310, cp311, cp312, cp313, cp314]
         python_impl: [Python]
         include:
           - python: cp312
             os: ubuntu-latest
             python_impl: Pyodide
-        exclude:
-          - os: windows-11-arm
-            python: cp310
     env:
       BUILD_COMMIT: "main"  # or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
