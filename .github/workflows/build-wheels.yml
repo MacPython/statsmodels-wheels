@@ -44,6 +44,8 @@ jobs:
       MKL_NUM_THREADS: 1
       OMP_NUM_THREADS: 1
       OPENLAS_NUM_THREADS: 1
+      IS_SCHEDULE: ${{ github.event_name == 'schedule' }}
+      IS_PUSH: ${{ github.event_name == 'push' }}
 
     steps:
       - uses: actions/checkout@v5
@@ -120,6 +122,7 @@ jobs:
           # generated at anaconda.org for scientific-python-nightly-wheels
           echo ${PWD}
           if [ ${ANACONDA_UPLOAD} == true ]; then
+            echo "Uploading to ${ANACONDA_ORG}"
             # main branches of these two packages
             python --version
             python -m pip install "cython<3" packaging
