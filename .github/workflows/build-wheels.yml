@@ -99,7 +99,7 @@ jobs:
             echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV
           fi
 
-      - uses: conda-incubator/setup-miniconda@3.2
+      - uses: conda-incubator/setup-miniconda@v3
         with:
           # for installation of anaconda-client, required for upload to
           # anaconda.org
