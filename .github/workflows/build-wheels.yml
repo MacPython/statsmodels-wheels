@@ -99,7 +99,8 @@ jobs:
             echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV
           fi
 
-      - uses: conda-incubator/setup-miniconda@v3
+      - name: Install conda
+        uses: conda-incubator/setup-miniconda@v3
         with:
           # for installation of anaconda-client, required for upload to
           # anaconda.org
@@ -111,9 +112,15 @@ jobs:
           miniforge-version: latest
           conda-remove-defaults: "true"
 
+      - name: Inspect conda
+        shell: pwsh
+        run: |
+          conda info
+          conda list
+
       - name: Upload wheels
         if: ${{ always() }}
-        shell: bash
+        shell: pwsh
         run: |
           # trigger an upload to the shared ecosystem
           # infrastructure at: https://anaconda.org/scientific-python-nightly-wheels
@@ -128,11 +135,12 @@ jobs:
           # multibuild-wheels-staging
           # generated at anaconda.org for scientific-python-nightly-wheels
           echo ${PWD}
-          if [ ${ANACONDA_UPLOAD} == true ]; then
+          if ( $env:ANACONDA_UPLOAD -eq "true")
+          {
             conda install -y anaconda-client
-            echo "Uploading to ${ANACONDA_ORG}"
+            echo "Uploading to $env:ANACONDA_ORG"
             # main branches of these two packages
             ls ./wheelhouse/*.whl
-            anaconda --verbose -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ./wheelhouse/*.whl
+            anaconda --verbose -t $env:TOKEN upload --force -u $env:ANACONDA_ORG ./wheelhouse/*.whl
             echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
-          fi
+          }
