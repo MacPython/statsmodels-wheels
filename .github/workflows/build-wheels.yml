@@ -81,14 +81,18 @@ jobs:
         shell: bash
         run: |
           if [ "schedule" == "${{ github.event_name }}" ] || [ "push" == "${{ github.event_name }}" ]; then
+            echo "Upload to Anaconda"
             echo "ANACONDA_UPLOAD=true" >> $GITHUB_ENV
           else
+            echo "Do not upload to Anaconda"
             echo "ANACONDA_UPLOAD=false" >> $GITHUB_ENV
           fi
           if [ "schedule" == "${{ github.event_name }}" ] || [ "main" == "$BUILD_COMMIT" ]; then
+            echo "Set upload for scientific-python-nightly-wheels"  
             echo "ANACONDA_ORG=scientific-python-nightly-wheels" >> $GITHUB_ENV
             echo "TOKEN=$SCIENTIFIC_PYTHON_NIGHTLY_WHEELS" >> $GITHUB_ENV
           else
+          echo "Set upload for multibuild-wheels-staging"
             echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV
             echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV
           fi
@@ -122,6 +126,6 @@ jobs:
             python -m pip list
             python -m pip install anaconda-cli-base anaconda-client anaconda-cli
             ls ./wheelhouse/*.whl
-            anaconda -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ./wheelhouse/*.whl
+            anaconda --verbose -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ./wheelhouse/*.whl
             echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
           fi
