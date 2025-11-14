@@ -99,10 +99,17 @@ jobs:
             echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV
           fi
 
-      # Used to ensure python is available for wheel upload
-      - uses: actions/setup-python@v6
+      - uses: conda-incubator/setup-miniconda@3.2
         with:
-          python-version: '3.x'
+          # for installation of anaconda-client, required for upload to
+          # anaconda.org
+          # default (and activated) environment name is test
+          # Note that this step is *after* specific pythons have been used to
+          # build and test the wheel
+          auto-update-conda: true
+          python-version: "3.11"
+          miniforge-version: latest
+          conda-remove-defaults: "true"
 
       - name: Upload wheels
         if: ${{ always() }}
@@ -122,12 +129,9 @@ jobs:
           # generated at anaconda.org for scientific-python-nightly-wheels
           echo ${PWD}
           if [ ${ANACONDA_UPLOAD} == true ]; then
+            conda install -y anaconda-client
             echo "Uploading to ${ANACONDA_ORG}"
             # main branches of these two packages
-            python --version
-            python -m pip install "cython<3" packaging
-            python -m pip list
-            python -m pip install anaconda-cli-base anaconda-client anaconda-cli
             ls ./wheelhouse/*.whl
             anaconda --verbose -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ./wheelhouse/*.whl
             echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
