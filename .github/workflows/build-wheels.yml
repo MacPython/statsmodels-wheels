@@ -60,7 +60,7 @@ jobs:
           platforms: all
 
       - name: Build wheels (Default)
-        uses: pypa/cibuildwheel@v3.2
+        uses: pypa/cibuildwheel@v3.3
         if: (matrix.python_impl != 'Pyodide')
         with:
           output-dir: wheelhouse
@@ -70,7 +70,7 @@ jobs:
 
       - name: Build Pyodide wheel
         if: matrix.python_impl == 'Pyodide'
-        uses: pypa/cibuildwheel@v3.2
+        uses: pypa/cibuildwheel@v3.3
         with:
           output-dir: wheelhouse
           package-dir: statsmodels
