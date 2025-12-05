@@ -24,7 +24,7 @@ jobs:
             os: ubuntu-latest
             python_impl: Pyodide
     env:
-      BUILD_COMMIT: "v0.14.5"  # or a specific version, e.g., v0.13.1
+      BUILD_COMMIT: "v0.14.6"  # or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64 aarch64"
       CIBW_ARCHS_MACOS: native
@@ -44,7 +44,7 @@ jobs:
       OPENLAS_NUM_THREADS: 1
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -56,7 +56,7 @@ jobs:
           platforms: all
 
       - name: Build wheels (Default)
-        uses: pypa/cibuildwheel@v3.2
+        uses: pypa/cibuildwheel@v3.3
         if: (matrix.python_impl != 'Pyodide')
         with:
           output-dir: wheelhouse
@@ -66,7 +66,7 @@ jobs:
 
       - name: Build Pyodide wheel
         if: matrix.python_impl == 'Pyodide'
-        uses: pypa/cibuildwheel@v3.2
+        uses: pypa/cibuildwheel@v3.3
         with:
           output-dir: wheelhouse
           package-dir: statsmodels
@@ -79,26 +79,44 @@ jobs:
         shell: bash
         run: |
           if [ "schedule" == "${{ github.event_name }}" ] || [ "push" == "${{ github.event_name }}" ]; then
+            echo "Upload to Anaconda"
             echo "ANACONDA_UPLOAD=true" >> $GITHUB_ENV
           else
+            echo "Do not upload to Anaconda"
             echo "ANACONDA_UPLOAD=false" >> $GITHUB_ENV
           fi
           if [ "schedule" == "${{ github.event_name }}" ] || [ "main" == "$BUILD_COMMIT" ]; then
+            echo "Set upload for scientific-python-nightly-wheels"  
             echo "ANACONDA_ORG=scientific-python-nightly-wheels" >> $GITHUB_ENV
             echo "TOKEN=$SCIENTIFIC_PYTHON_NIGHTLY_WHEELS" >> $GITHUB_ENV
           else
+          echo "Set upload for multibuild-wheels-staging"
             echo "ANACONDA_ORG=multibuild-wheels-staging" >> $GITHUB_ENV
             echo "TOKEN=$MULTIBUILD_WHEELS_STAGING_ACCESS" >> $GITHUB_ENV
           fi
 
-      # Used to ensure python is available for wheel upload
-      - uses: actions/setup-python@v6
+      - name: Install conda
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          python-version: '3.x'
+          # for installation of anaconda-client, required for upload to
+          # anaconda.org
+          # default (and activated) environment name is test
+          # Note that this step is *after* specific pythons have been used to
+          # build and test the wheel
+          auto-update-conda: true
+          python-version: "3.11"
+          miniforge-version: latest
+          conda-remove-defaults: "true"
+
+      - name: Inspect conda
+        shell: pwsh
+        run: |
+          conda info
+          conda list
 
       - name: Upload wheels
         if: ${{ always() }}
-        shell: bash
+        shell: pwsh
         run: |
           # trigger an upload to the shared ecosystem
           # infrastructure at: https://anaconda.org/scientific-python-nightly-wheels
@@ -113,15 +131,12 @@ jobs:
           # multibuild-wheels-staging
           # generated at anaconda.org for scientific-python-nightly-wheels
           echo ${PWD}
-          if [ ${ANACONDA_UPLOAD} == true ]; then
+          if ( $env:ANACONDA_UPLOAD -eq "true")
+          {
+            conda install -y anaconda-client
+            echo "Uploading to $env:ANACONDA_ORG"
             # main branches of these two packages
-            python --version
-            python -m pip install "cython<3" packaging
-            python -m pip list
-            python -m pip install git+https://github.com/bashtage/clyent.git
-            python -m pip install git+https://github.com/Anaconda-Server/anaconda-client.git
-            python -m pip install "urllib3>=1.21.1,<2"
             ls ./wheelhouse/*.whl
-            anaconda -t ${TOKEN} upload --force -u ${ANACONDA_ORG} ./wheelhouse/*.whl
+            anaconda --verbose -t $env:TOKEN upload --force -u $env:ANACONDA_ORG ./wheelhouse/*.whl
             echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
-          fi
+          }
