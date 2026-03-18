@@ -26,7 +26,7 @@ jobs:
             os: ubuntu-latest
             python_impl: Pyodide
     env:
-      BUILD_COMMIT: "main"  # or a specific version, e.g., v0.13.1
+      BUILD_COMMIT: "osx-experiment"  # or a specific version, e.g., v0.13.1
       CIBW_BUILD: ${{ matrix.python }}-*
       CIBW_ARCHS_LINUX: "x86_64 aarch64"
       CIBW_ARCHS_MACOS: native
