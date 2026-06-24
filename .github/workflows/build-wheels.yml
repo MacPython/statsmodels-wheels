@@ -43,7 +43,8 @@ jobs:
       CIBW_TEST_REQUIRES: pytest pytest-xdist pytest-randomly threadpoolctl pytest-run-parallel
       CIBW_TEST_COMMAND: python -c "import numpy; numpy.show_runtime(); import statsmodels; statsmodels.test(['-m','(not slow and not example)','-n','2'], exit=True)"
       # Avoid testing on emulated architectures and Pyodide
-      CIBW_TEST_SKIP: "*-*linux_{aarch64,ppc64le,s390x} *pyodide*"
+      # Skip testing for now on Windows ARM11 due to linalg segfaults upstream
+      CIBW_TEST_SKIP: "*-*linux_{aarch64,ppc64le,s390x} *pyodide* *-win_arm64"
       CIBW_REPAIR_WHEEL_COMMAND_LINUX: 'auditwheel repair --strip -w {dest_dir} {wheel}'
       CIBW_BUILD_VERBOSITY: 1
       MULTIBUILD_WHEELS_STAGING_ACCESS: ${{ secrets.MULTIBUILD_WHEELS_STAGING_ACCESS }}
