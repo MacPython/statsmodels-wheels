@@ -22,7 +22,7 @@ jobs:
         python: [cp310, cp311, cp312, cp313, cp314]
         python_impl: [Python]
         include:
-          - python: cp312
+          - python: cp313
             os: ubuntu-latest
             python_impl: Pyodide
         exclude:
@@ -84,6 +84,9 @@ jobs:
         env:
           CIBW_BEFORE_BUILD: 'git submodule foreach git checkout  ${{ env.BUILD_COMMIT }}'
           CIBW_PLATFORM: pyodide
+          CIBW_BUILD: "cp313-*"
+          CIBW_TEST_COMMAND: python -c "import statsmodels; statsmodels.test(['-sra', '--skip-examples', '--skip-slow'], exit=True)"
+          CIBW_TEST_REQUIRES: pytest pytest-cov pytest-run-parallel matplotlib
 
       - name: Setup Upload Variables
         if: ${{ always() }}
