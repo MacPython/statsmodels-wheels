@@ -42,7 +42,11 @@ jobs:
       # Skip musl for 3.8 and 3.9 since no upstream wheels
       CIBW_SKIP: "*-win32 *musllinux_aarch64*"
       CIBW_TEST_REQUIRES: pytest pytest-xdist pytest-randomly threadpoolctl pytest-run-parallel pandas<3.1
-      CIBW_TEST_COMMAND: python -c "import numpy; numpy.show_runtime(); import statsmodels; statsmodels.test(['-m','(not slow and not example)','-n','2','--randomly-dont-reset-seed'], exit=True)"
+      # Print the runtime and the BLAS and LAPACK libraries before the tests,
+      # to help diagnose test failures that depend on the platform. statsmodels
+      # is imported first so that the library of SciPy is loaded, and so is
+      # listed by threadpoolctl in show_runtime, next to the one of NumPy.
+      CIBW_TEST_COMMAND: python -c "import numpy, scipy, statsmodels.api; numpy.show_runtime(); numpy.show_config(); scipy.show_config(); statsmodels.test(['-m','(not slow and not example)','-n','2','--randomly-dont-reset-seed'], exit=True)"
       # Avoid testing on emulated architectures and Pyodide
       # Skip testing for now on Windows ARM11 due to linalg segfaults upstream
       CIBW_TEST_SKIP: "*-*linux_{aarch64,ppc64le,s390x}"
